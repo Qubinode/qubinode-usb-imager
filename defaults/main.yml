@@ -1,2 +1,12 @@
 ---
 # defaults file for qubinode-usb-imager
+packages:
+  - grub2-efi 
+  - shim 
+  - gdisk 
+  - grub2-efi-modules 
+  - grub2-efi-x64-modules
+
+ks_file_dir: ''
+rhel_iso_dir: ''
+usb_device: ''

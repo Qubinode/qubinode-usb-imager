@@ -1,2 +1,10 @@
 ---
 # tasks file for qubinode-usb-imager
+- name: install required packages
+  include_tasks: install_pkgs.yml
+
+- name: format qubinode usb disk
+  include_tasks: format_disks.yml
+
+- name: configure qubinode bootable usb
+  include_tasks: configure_usb.yml

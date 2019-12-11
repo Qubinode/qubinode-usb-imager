@@ -1,0 +1,7 @@
+---
+# install_pkgs file for qubinode-usb-imager
+- name: install required packages
+  yum: 
+    name: "{{ usb_device }}"
+    state: present
+        

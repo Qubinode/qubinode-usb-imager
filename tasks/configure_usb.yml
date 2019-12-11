@@ -1,0 +1,48 @@
+--- 
+# configure_usb for qubinode-usb-imager    
+- name: create usb device mounting directory
+  become: yes
+  file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0755'
+  with_items:
+    - '/mnt/qubiusb/efi'
+    - '/mnt/qubiusb/data'
+    
+- name: mount efi filesystem
+  become: yes
+  mount:
+    path: '/mnt/qubiusb/efi'
+    src: "{{ usb_device }}1"  
+    fstype: vfat
+    state: present
+
+- name: mount data filesystem
+  become: yes
+  mount:
+    path: '/mnt/qubiusb/data'
+    src: "{{ usb_device }}2"  
+    fstype: xfs
+    state: present
+  
+- name: install legacy grub system 
+  become: yes
+  command: >
+    "grub2-install 
+    --boot-directory='/mnt/qubiusb/data/boot'
+    --target=i386-pc 
+    --recheck 
+    {{ usb_device }}" 
+      
+- name: install efi grub system 
+  become: yes
+  command: >
+    "grub2-install 
+    --boot-directory='/mnt/qubiusb/data/boot'
+    --efi-directory='/mnt/qubiusb/efi'
+    --target=x86_64-efi 
+    --bootloader-id=qubinode 
+    --recheck
+    --removable"
+

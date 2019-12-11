@@ -1,0 +1,55 @@
+---
+# format_disks file for qubinode-usb-imager
+- name: read usb device information 
+  parted: 
+    device: "{{ usb_device }}"
+    unit: MiB
+    register: disk_info
+
+- name: remove all partitions from disk 
+  parted:
+    device: "{{ usb_device }}"
+    number: "{{ item.num }}"
+    state: absent
+  with_items:
+    - "{{ sdb_info.partitions }}"
+
+- name: tell the OS the paritions has change
+  become: yes
+  command: >
+    sudo partprobe
+  ignore_errors: True
+
+- name: create efi grub boot disk partition
+  become: yes
+  parted:
+    label: msdos
+    device: "{{ usb_device }}"
+    number: 1
+    state: present
+    part_type: primary
+    part_end: 1024MiB 
+    flags: [ boot, esp ]
+
+- name: create data boot disk partition
+  become: yes
+  parted:
+     label: msdos
+     device: "{{ usb_device }}"
+     number: 2
+     state: present
+     part_type: primary
+     part_start: 1024MiB
+     part_end: 100% 
+
+- name: format efi boot grub filesystem
+  become: yes
+  filesystem:
+    fstype: vfat
+    dev: "{{ usb_device }}1"   
+
+- name: format data partition filesystem
+  become: yes
+  filesystem:
+    fstype: xfs
+    dev: "{{ usb_device }}2"
