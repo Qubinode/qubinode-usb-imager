@@ -18,7 +18,7 @@ lang en_US.UTF-8
 reboot
 
 # Network information
-network  --bootproto=static --device={{ qubinode_device }} --gateway={{ qubinode_gw }} --ip={{ qubinode_ip_addr }} --nameserver={{ qubinode_nameserver_ip }} --netmask={{ qubinode_netmask }} --onboot=on --ipv6=auto --activate
+network  --bootproto=static --device={{ qubinode_net_dev }} --gateway={{ qubinode_gw }} --ip={{ qubinode_ip_addr }} --nameserver={{ qubinode_nameserver_ip }} --netmask={{ qubinode_netmask }} --onboot=on --ipv6=auto --activate
 network  --hostname={{ qubinode_hostname }}
 
 # Root password
