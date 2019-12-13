@@ -22,10 +22,10 @@ Role Variables
 | qubinode_gw | | qubinode host default network gateway
 | qubinode_nameserver_ip | default = '1.1.1.1' | DNS server for qubinode server |
 | qubinode_net_dev | | qubinode network device(exanple: 'eno1')
-| qubi_pw | default = "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/" | qubinode host default qubi user password |
+| qubi_pw | | qubinode host default qubi user password |
 | qubinode_netmask | | qubinode host default network netmask(example: '255.255.255.0) |
 | rhel_iso_dir | | location  of rhel-server-7.6-x86_64-dvd.iso (example: '/home/qubiuser/rhel-server-7.6-x86_64-dvd.iso') |
-| root_pw | default = "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/" | root password for qubinode box
+| root_pw | | root password for qubinode box
 | usb_device | | example: '/dev/sdc' |
 
 Example Playbook
