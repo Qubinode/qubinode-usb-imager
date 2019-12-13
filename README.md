@@ -11,7 +11,7 @@ You will need to download the rhel-server-7.6-x86_64-dvd.iso from access.redhat.
 Role Variables
 --------------
 
-| Parameter | Choices | Comments |
+| Parameter | Default value | Description |
 | --- | --- | --- |
 | iso_grub_dir  | default = [ '/rhel-server-7.6-x86_64-dvd.iso' ]  | set ISO varibale in qubinode kickstart file  |
 | ks_file | default = '/qubinode-rhel7.6.ks' | set KS varibale in qubinode kickstart file |
