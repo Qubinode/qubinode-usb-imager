@@ -1,7 +1,7 @@
-Role Name
+qubinode-usb-imager
 =========
 
-qubinode-usb-imager builds bootable usb used to install RHEL 7 on a qubinode hosts
+The qubinode-usb-imager Ansible role builds a bootable usb disk to be used to a qubinode hosts
 
 Requirements
 ------------
