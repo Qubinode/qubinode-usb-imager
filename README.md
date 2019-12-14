@@ -30,23 +30,23 @@ Role Variables
 Example Playbook
 ----------------
 
-    - hosts: localhost
-      remote_user: root
-      roles:
-         - include: qubinode-usb-imager
-           vars:
-             rhel_iso_dir: '/home/qubi/rhel-server-7.6-x86_64-dvd.iso'
-             usb_device: '/dev/sdb'
-             root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
-             qubi_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
-             qubinode_net_dev: 'eno1'
-             qubinode_ip_addr: '192.168.1.45'
-             qubinode_nameserver_ip: '1.1.1.1'
-             qubinode_netmask: '255.255.255.0'
-             qubinode_hostname: 'qubinode-box.example.com'
-             qubinode_gw: '192.168.1.1'
-             iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
-             ks_file: '/qubinode-rhel7.6.ks' 
+- hosts: localhost
+  remote_user: root
+  roles:
+    - include: qubinode-usb-imager
+      vars:
+        rhel_iso_dir: '/home/qubi/rhel-server-7.6-x86_64-dvd.iso'
+        usb_device: '/dev/sdb'
+        root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
+        qubi_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
+        qubinode_net_dev: 'eno1'
+        qubinode_ip_addr: '192.168.1.45'
+        qubinode_nameserver_ip: '1.1.1.1'
+        qubinode_netmask: '255.255.255.0'
+        qubinode_hostname: 'qubinode-box.example.com'
+        qubinode_gw: '192.168.1.1'
+        iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
+        ks_file: '/qubinode-rhel7.6.ks' 
 
 
 License
