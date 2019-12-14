@@ -29,7 +29,7 @@ Role Variables
 
 Example Playbook
 ----------------
-
+```yaml
 - hosts: localhost
   remote_user: root
   roles:
@@ -47,8 +47,7 @@ Example Playbook
         qubinode_gw: '192.168.1.1'
         iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
         ks_file: '/qubinode-rhel7.6.ks' 
-
-
+```
 License
 -------
 
