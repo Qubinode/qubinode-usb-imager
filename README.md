@@ -6,7 +6,7 @@ The qubinode-usb-imager Ansible role builds a bootable usb disk to be used to a 
 Requirements
 ------------
 
-You will need to download the rhel-server-7.6-x86_64-dvd.iso from access.redhat.com
+- rhel-server-7.6-x86_64-dvd.iso 
 
 Role Variables
 --------------
@@ -55,4 +55,4 @@ BSD
 
 Author Information
 ------------------
-Abner Malivert (idtff)
+Abner Malivert 
