@@ -7,16 +7,16 @@ packages:
   - grub2-efi-modules 
   - grub2-efi-x64-modules
 
-ks_file_dir: ''
 rhel_iso_dir: ''
 usb_device: ''
 root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
 qubi_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
 qubinode_net_dev: ''
 qubinode_ip_addr: ''
-qubinode_nameserver_ip: ''
+qubinode_nameserver_ip: '1.1.1.1'
 qubinode_netmask: ''
-qubinode_hostname: ''
+qubinode_hostname: 'qubinode-box.example.com'
 qubinode_gw: ''
-iso_dir: '/rhel-server-7.6-x86_64-dvd.iso'
+iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
+local_rhel_iso: ''
 ks_file: '/qubinode-rhel7.6.ks' 

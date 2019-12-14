@@ -1,48 +1,37 @@
 --- 
-# configure_usb for qubinode-usb-imager    
-- name: create usb device mounting directory
-  become: yes
-  file:
-      path: "{{ item }}"
-      state: directory
-      mode: '0755'
-  with_items:
-    - '/mnt/qubiusb/efi'
-    - '/mnt/qubiusb/data'
-    
-- name: mount efi filesystem
-  become: yes
-  mount:
-    path: '/mnt/qubiusb/efi'
-    src: "{{ usb_device }}1"  
-    fstype: vfat
-    state: mounted
-
+   
 - name: mount data filesystem
   become: yes
   mount:
-    path: '/mnt/qubiusb/data'
+    path: '/mnt/qubiusb'
     src: "{{ usb_device }}2"  
     fstype: xfs
     state: mounted
   
-- name: install legacy grub system 
+- name: mount grub filesystem
+  become: yes
+  mount:
+    path: '/mnt/qubiusb/boot'
+    src: "{{ usb_device }}1"  
+    fstype: vfat
+    state: mounted
+  
+- name: install legacy grub file system 
   become: yes
   command: >
     "grub2-install 
-    --boot-directory='/mnt/qubiusb/data/boot'
+    --boot-directory='/mnt/qubiusb/boot'
     --target=i386-pc 
     --recheck 
     {{ usb_device }}" 
       
-- name: install efi grub system 
+- name: install efi grub file system 
   become: yes
   command: >
     "grub2-install 
-    --boot-directory='/mnt/qubiusb/data/boot'
+    --boot-directory='/mnt/qubiusb/boot'
     --efi-directory='/mnt/qubiusb/efi'
     --target=x86_64-efi 
-    --bootloader-id=qubinode 
     --recheck
     --removable"
 
@@ -52,6 +41,27 @@
     "lsblk -f {{ usb_device }} | grep xfs"
   register: dev_fsuuid
 
+- name: deploy qubinode custom grub file
+  become: yes 
+  template:
+    src: grub2.conf.j2
+    dest: '/mnt/qubiusb/boot/grub2/grub.cfg'
+    mode: '0644'
+
+- name: deploy qubinode custom kickstart file
+  become: yes 
+  template:
+    src: qubinode_rhel76.ks.j2
+    dest: '/mnt/qubiusb/qubinode-rhel7.6.ks'
+    mode: '0644'
+
+- name: copy RHEL 7.6 iso file to usb device
+  become: yes
+  copy:
+    src: "{{ local_rhel_iso }}"
+    dest: '/mnt/qubiusb'
+    mode: '0644'
+      
 - name: unmount efi filesystem
   become: yes
   mount:
