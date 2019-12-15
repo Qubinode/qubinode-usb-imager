@@ -33,7 +33,7 @@ Example Playbook
 - hosts: localhost
   remote_user: root
   roles:
-    - include: qubinode-usb-imager
+    - name: qubinode-usb-imager
       vars:
         rhel_iso_dir: '/home/qubi/rhel-server-7.6-x86_64-dvd.iso'
         usb_device: '/dev/sdb'

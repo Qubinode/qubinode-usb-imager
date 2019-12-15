@@ -1,10 +1,24 @@
 ---
 # format_disks file for qubinode-usb-imager
+- name: unmount usb device
+  become: yes
+  command: >
+    "umount {{ usb_device }}"
+
+- name: unmount data filesystem
+  become: yes
+  mount:
+    path: '/mnt/qubiusb/data'
+    src: "{{ usb_device }}2"  
+    fstype: xfs
+    state: absent
+  
+
 - name: read usb device information 
   parted: 
     device: "{{ usb_device }}"
     unit: MiB
-    register: disk_info
+  register: disk_info
 
 - name: remove all partitions from disk 
   parted:
@@ -12,7 +26,7 @@
     number: "{{ item.num }}"
     state: absent
   with_items:
-    - "{{ sdb_info.partitions }}"
+    - "{{ disk_info.partitions }}"
 
 - name: tell the OS the paritions has change
   become: yes
@@ -29,7 +43,7 @@
     state: present
     part_type: primary
     part_end: 1024MiB 
-    flags: [ boot, esp ]
+    flags: [ boot ]
 
 - name: create data boot disk partition
   become: yes

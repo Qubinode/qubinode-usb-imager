@@ -20,7 +20,7 @@
   become: yes
   command: >
     "grub2-install 
-    --boot-directory='/mnt/qubiusb/boot'
+    --boot-directory=/mnt/qubiusb/boot
     --target=i386-pc 
     --recheck 
     {{ usb_device }}" 
@@ -29,8 +29,8 @@
   become: yes
   command: >
     "grub2-install 
-    --boot-directory='/mnt/qubiusb/boot'
-    --efi-directory='/mnt/qubiusb/efi'
+    --boot-directory=/mnt/qubiusb/boot
+    --efi-directory=/mnt/qubiusb/boot/efi
     --target=x86_64-efi 
     --recheck
     --removable"
