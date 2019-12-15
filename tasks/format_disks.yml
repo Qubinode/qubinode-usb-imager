@@ -38,7 +38,7 @@
     state: present
     part_type: primary
     part_end: 1024MiB 
-    flags: [ boot, legacy_boot ]
+    flags: [ boot ]
 
 - name: create data boot disk partition
   become: yes
@@ -47,10 +47,8 @@
      device: "{{ usb_device }}"
      number: 2
      state: present
-     part_type: primary
      part_start: 1024MiB
-     part_end: 100%
-     flags: [ LVM ] 
+     flags: [ lvm ]
 
 - name: format efi boot grub filesystem
   become: yes
