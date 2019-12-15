@@ -11,7 +11,7 @@
   become: yes
   mount:
     path: "{ usb_device }}{{ item.num }}"
-    state: unmounted
+    state: absent
   with_items:
     - "{{ disk_info.partitions }}"
   
@@ -20,6 +20,7 @@
     device: "{{ usb_device }}"
     number: "{{ item.num }}"
     state: absent
+
   with_items:
     - "{{ disk_info.partitions }}"
 
@@ -32,24 +33,25 @@
 - name: create efi grub boot disk partition
   become: yes
   parted:
-    label: msdos
+    label: gpt
     device: "{{ usb_device }}"
     number: 1
     state: present
     part_type: primary
     part_end: 1024MiB 
-    flags: [ boot ]
+    flags: [ boot, esp, legacy_boot ]
 
 - name: create data boot disk partition
   become: yes
   parted:
-     label: msdos
+     label: gpt
      device: "{{ usb_device }}"
      number: 2
      state: present
      part_type: primary
      part_start: 1024MiB
      part_end: 100% 
+     flags: [ msftdata ]
 
 - name: format efi boot grub filesystem
   become: yes
