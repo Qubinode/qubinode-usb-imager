@@ -49,7 +49,8 @@
      state: present
      part_type: primary
      part_start: 1024MiB
-     part_end: 100% 
+     part_end: 100%
+     flags: [ LVM ] 
 
 - name: format efi boot grub filesystem
   become: yes
