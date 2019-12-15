@@ -20,7 +20,6 @@
     device: "{{ usb_device }}"
     number: "{{ item.num }}"
     state: absent
-
   with_items:
     - "{{ disk_info.partitions }}"
 
