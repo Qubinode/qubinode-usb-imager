@@ -1,15 +1,17 @@
 ---
 # format_disks file for qubinode-usb-imager
 - name: read usb device information 
+  become: yes
   parted: 
     device: "{{ usb_device }}"
     unit: MiB
   register: disk_info
 
-- name: unmount usb device
+- name: unmount usb qubinode device
   become: yes
-  command: >
-    "umount {{ usb_device }}{{ item.num }}"
+  mount:
+    path: "{ usb_device }}{{ item.num }}"
+    state: absent
   with_items:
     - "{{ disk_info.partitions }}"
   
