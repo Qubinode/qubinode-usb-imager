@@ -38,7 +38,7 @@
     state: present
     part_type: primary
     part_end: 1024MiB 
-    flags: [ boot, esp, legacy_boot ]
+    flags: [ boot, legacy_boot ]
 
 - name: create data boot disk partition
   become: yes
