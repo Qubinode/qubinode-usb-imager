@@ -50,7 +50,6 @@
      part_type: primary
      part_start: 1024MiB
      part_end: 100% 
-     flags: [ msftdata ]
 
 - name: format efi boot grub filesystem
   become: yes
