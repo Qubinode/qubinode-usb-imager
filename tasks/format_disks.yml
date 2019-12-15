@@ -11,7 +11,7 @@
   become: yes
   mount:
     path: "{ usb_device }}{{ item.num }}"
-    state: absent
+    state: unmounted
   with_items:
     - "{{ disk_info.partitions }}"
   
