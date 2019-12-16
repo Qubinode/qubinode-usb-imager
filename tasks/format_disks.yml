@@ -32,18 +32,17 @@
 - name: create legacy boot partition
   become: yes
   shell: > 
-    /bin/echo -e "n\np\n1\n\n500M\nt\nef00\nw\nY" | gdisk "{{ usb_device }}"
+   "/bin/echo -e n\np\n1\n\n500M\nt\nef00\nw\nY | gdisk {{ usb_device }}"
   
 - name: create  efi boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n2\n\n500M\nt\n8300\nw\nY" | gdisk "{{ usb_device }}"
+    "/bin/echo -e n\np\n2\n\n500M\nt\n8300\nw\nY | gdisk {{ usb_device }}"
 
 - name: create  data boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n3\n\n\nt\n8300\nw\nY" | gdisk "{{ usb_device }}"
-
+    "/bin/echo -e n\np\n3\n\n\nt\n8300\nw\nY | gdisk {{ usb_device }}"
 
 - name: format efi boot grub filesystem
   become: yes
