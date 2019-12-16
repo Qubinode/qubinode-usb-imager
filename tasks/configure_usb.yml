@@ -1,22 +1,38 @@
 --- 
-   
+- name: create data directory for usb device
+  become: yes
+  file:
+    path: '/mnt/qubiusb'
+    state: directory   
+
 - name: mount data filesystem
   become: yes
-  mount:
-    path: '/mnt/qubiusb'
-    src: "{{ usb_device }}2"  
-    fstype: xfs
-    state: mounted
-  
-- name: mount grub filesystem
+  command: > 
+    "mount {{ usb_device }}3 /mnt/qubiusb/"
+
+- name: create boot directory for usb device
   become: yes
-  mount:
+  file:
     path: '/mnt/qubiusb/boot'
-    src: "{{ usb_device }}1"  
-    fstype: vfat
-    state: mounted
-  
-- name: install legacy grub file system 
+    state: directory 
+
+- name: mount legacy boot filesystem
+  become: yes
+  command: > 
+    "mount {{ usb_device }}1 /mnt/qubiusb/boot/"
+
+- name: create efi boot directory for usb device
+  become: yes
+  file:
+    path: '/mnt/qubiusb/boot/efi'
+    state: directory 
+
+- name: mount legacy boot filesystem
+  become: yes
+  command: > 
+    "mount {{ usb_device }}2 /mnt/qubiusb/boot/efi"
+
+- name: install legacy grub filesystem 
   become: yes
   command: >
     "grub2-install 
@@ -24,17 +40,21 @@
     --target=i386-pc 
     --recheck 
     {{ usb_device }}" 
-      
-- name: install efi grub file system 
+
+- name: install efi grub filesystem 
   become: yes
   command: >
     "grub2-install 
-    --boot-directory=/mnt/qubiusb/boot
-    --efi-directory=/mnt/qubiusb/boot/efi
-    --target=x86_64-efi 
-    --recheck
-    --removable"
+    --boot-directory=/mnt/qubiusb/boot 
+    --efi-directory=/mnt/qubiusb/boot/efi 
+    --target=x86_64-efi --bootloader-id=qubinode 
+    --removable -v {{ usb_device }}"
 
+- name: create grub config file
+  become: yes
+  command: >
+    grub2-mkconfig -o /mnt/qubiusb/boot/grub2/grub.cfg
+    
 - name: get the FSSUID for the usb device
   become: yes
   command: >
@@ -61,19 +81,19 @@
     src: "{{ local_rhel_iso }}"
     dest: '/mnt/qubiusb'
     mode: '0644'
-      
-- name: unmount efi filesystem
+
+- name: unmount legacy boot filesystem
   become: yes
-  mount:
-    path: '/mnt/qubiusb/efi'
-    src: "{{ usb_device }}1"  
-    fstype: vfat
-    state: absent
+  command: > 
+    "unmount {{ usb_device }}2 /mnt/qubiusb/boot/efi"
+
+- name: unmount legacy boot filesystem
+  become: yes
+  command: > 
+    "umount {{ usb_device }}1 /mnt/qubiusb/boot/"
 
 - name: unmount data filesystem
   become: yes
-  mount:
-    path: '/mnt/qubiusb/data'
-    src: "{{ usb_device }}2"  
-    fstype: xfs
-    state: absent
+  command: > 
+    "umount {{ usb_device }}3 /mnt/qubiusb/"      
+
