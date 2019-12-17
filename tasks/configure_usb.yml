@@ -8,18 +8,13 @@
 - name: mount data filesystem
   become: yes
   command: > 
-    "mount {{ usb_device }}3 /mnt/qubiusb/"
+    "mount {{ usb_device }}2 /mnt/qubiusb"
 
 - name: create boot directory for usb device
   become: yes
   file:
     path: '/mnt/qubiusb/boot'
     state: directory 
-
-- name: mount legacy boot filesystem
-  become: yes
-  command: > 
-    "mount {{ usb_device }}1 /mnt/qubiusb/boot/"
 
 - name: create efi boot directory for usb device
   become: yes
@@ -85,15 +80,10 @@
 - name: unmount legacy boot filesystem
   become: yes
   command: > 
-    "unmount {{ usb_device }}2 /mnt/qubiusb/boot/efi"
-
-- name: unmount legacy boot filesystem
-  become: yes
-  command: > 
-    "umount {{ usb_device }}1 /mnt/qubiusb/boot/"
+    "unmount {{ usb_device }}1 /mnt/qubiusb/boot/efi"
 
 - name: unmount data filesystem
   become: yes
   command: > 
-    "umount {{ usb_device }}3 /mnt/qubiusb/"      
+    "umount {{ usb_device }}2 /mnt/qubiusb/"      
 
