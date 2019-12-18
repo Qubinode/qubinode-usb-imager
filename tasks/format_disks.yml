@@ -29,7 +29,6 @@
     sudo partprobe
   ignore_errors: True
 
-
 - name: create efi boot partition
   become: yes
   shell: >
@@ -38,10 +37,18 @@
     executable: /bin/bash
   ignore_errors: True
 
+- name: create legacy boot partition
+  become: yes
+  shell: >
+    /bin/echo -e "n\np\n2\n\n1000M\nt\nef02\nw\nY"| sudo gdisk "{{ usb_device }}"
+  args:
+    executable: /bin/bash
+  ignore_errors: True
+
 - name: create data boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n2\n\n\nt\n8300\nw\nY"| sudo gdisk "{{ usb_device }}"
+    /bin/echo -e "n\np\n3\n\n\nt\n8300\nw\nY"| sudo gdisk "{{ usb_device }}"
   args:
     executable: /bin/bash
   ignore_errors: True
@@ -51,11 +58,18 @@
   filesystem:
     fstype: vfat
     dev: "{{ usb_device }}1"
-    force: yes   
+    force: yes
+
+- name: format legacy boot grub filesystem
+  become: yes
+  filesystem:
+    fstype: ext4
+    dev: "{{ usb_device }}2"
+    force: yes 
 
 - name: format data partition filesystem
   become: yes
   filesystem:
     fstype: xfs
-    dev: "{{ usb_device }}2"
+    dev: "{{ usb_device }}3"
     force: yes

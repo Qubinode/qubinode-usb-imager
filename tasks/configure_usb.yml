@@ -1,60 +1,59 @@
 --- 
-- name: create data directory for usb device
-  become: yes
-  file:
-    path: '/mnt/qubiusb'
-    state: directory   
-
 - name: mount data filesystem
   become: yes
-  command: > 
-    "mount {{ usb_device }}2 /mnt/qubiusb"
-
-- name: create boot directory for usb device
-  become: yes
-  file:
-    path: '/mnt/qubiusb/boot'
-    state: directory 
-
-- name: create efi boot directory for usb device
-  become: yes
-  file:
-    path: '/mnt/qubiusb/boot/efi'
-    state: directory 
+  mount:
+    path: '/mnt/qubiusb'
+    src: "{{ usb_device }}3"
+    fstype: xfs
+    state: mounted
 
 - name: mount legacy boot filesystem
   become: yes
-  command: > 
-    "mount {{ usb_device }}2 /mnt/qubiusb/boot/efi"
+  mount:
+    path: '/mnt/qubiusb/boot'
+    src: "{{ usb_device }}2"
+    fstype: ext4
+    state: mounted
 
+- name: mount efi boot filesystem
+  become: yes
+  mount:
+    path: '/mnt/qubiusb/boot/efi'
+    src: "{{ usb_device }}1"
+    fstype: vfat
+    state: mounted
+    
 - name: install legacy grub filesystem 
   become: yes
   command: >
-    "grub2-install 
+    /usr/sbin/grub2-install 
     --boot-directory=/mnt/qubiusb/boot
     --target=i386-pc 
     --recheck 
-    {{ usb_device }}" 
+    "{{ usb_device }}" 
 
 - name: install efi grub filesystem 
   become: yes
   command: >
-    "grub2-install 
+    /usr/sbin/grub2-install
     --boot-directory=/mnt/qubiusb/boot 
     --efi-directory=/mnt/qubiusb/boot/efi 
     --target=x86_64-efi --bootloader-id=qubinode 
-    --removable -v {{ usb_device }}"
+    --removable -v "{{ usb_device }}"
 
 - name: create grub config file
   become: yes
   command: >
-    grub2-mkconfig -o /mnt/qubiusb/boot/grub2/grub.cfg
+    /usr/sbin/grub2-mkconfig -o /mnt/qubiusb/boot/grub2/grub.cfg
     
 - name: get the FSSUID for the usb device
   become: yes
-  command: >
-    "lsblk -f {{ usb_device }} | grep xfs"
+  shell: >
+    /usr/bin/lsblk -f "{{ usb_device }}" | awk '/xfs /{print $3}'
   register: dev_fsuuid
+
+- debug: 
+    var: "{{ dev_fsuuid }}"
 
 - name: deploy qubinode custom grub file
   become: yes 
@@ -73,17 +72,30 @@
 - name: copy RHEL 7.6 iso file to usb device
   become: yes
   copy:
-    src: "{{ local_rhel_iso }}"
-    dest: '/mnt/qubiusb'
+    src: "{{ rhel_iso_dir }}"
+    dest: "/mnt/qubiusb{{ iso_grub_dir }}"
     mode: '0644'
+
+- name: unmount efi boot filesystem
+  become: yes
+  mount:
+    path: '/mnt/qubiusb/boot/efi'
+    src: "{{ usb_device }}1"
+    fstype: vfat
+    state: absent
 
 - name: unmount legacy boot filesystem
   become: yes
-  command: > 
-    "unmount {{ usb_device }}1 /mnt/qubiusb/boot/efi"
+  mount:
+    path: '/mnt/qubiusb/boot' 
+    src: "{{ usb_device }}2"
+    fstype: ext4
+    state: absent
 
 - name: unmount data filesystem
   become: yes
-  command: > 
-    "umount {{ usb_device }}2 /mnt/qubiusb/"      
-
+  mount:
+    path: '/mnt/qubiusb'
+    src: "{{ usb_device }}3"
+    fstype: xfs
+    state: absent
