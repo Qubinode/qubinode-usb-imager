@@ -27,12 +27,29 @@
   become: yes
   command: >
     sudo partprobe
+  register: partprobe_result
   ignore_errors: True
+
+- name: reboot if partprobe fails
+  become: yes
+  shell: "/usr/bin/sleep 5 && /usr/sbin/reboot"
+  async: 1
+  poll: 0
+  when: partprobe_result.rc == 1
+
+- name: wait for the reboot to complete
+  become: yes
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: partprobe_result.rc == 1
 
 - name: create efi boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n1\n\n500M\nt\nef00\nw\nY" | sudo gdisk "{{ usb_device }}"
+    /bin/echo -e "n\np\n1\n\n100M\nt\nef00\nw\nY" | sudo gdisk "{{ usb_device }}"
   args:
     executable: /bin/bash
   ignore_errors: True
@@ -40,7 +57,7 @@
 - name: create legacy boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n2\n\n1000M\nt\nef02\nw\nY"| sudo gdisk "{{ usb_device }}"
+    /bin/echo -e "n\np\n2\n\n200M\nt\nef02\nw\nY"| sudo gdisk "{{ usb_device }}"
   args:
     executable: /bin/bash
   ignore_errors: True

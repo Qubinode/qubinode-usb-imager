@@ -6,5 +6,11 @@
 - name: format qubinode usb disk
   include_tasks: format_disks.yml
 
-- name: configure qubinode bootable usb
-  include_tasks: configure_usb.yml
+- name: configure efi bootable partittion
+  include_tasks: configure_efi_boot.yml
+
+- name: configure legacy bootable partition
+  include_tasks: configure_legacy_boot.yml
+
+- name: configure data partition
+  include_tasks: configure_data_partition.yml
