@@ -55,6 +55,23 @@ Example Playbook
         ks_file: 'qubinode-rhel7.6.ks' 
         ok_to_reboot: no
 ```
+
+Known Issues
+------------
+
+If you try to mount the data volume and encounter an error like this.
+
+```
+mount: wrong fs type, bad option, bad superblock on /dev/xxx
+```
+
+Using the device sdb2 as an example, run the following commands to resolve.
+
+```
+xfs_repair -L /dev/sdb2
+xfs_admin -U generate /dev/sdb2
+```
+
 License
 -------
 
