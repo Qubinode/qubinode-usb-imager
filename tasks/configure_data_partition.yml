@@ -7,8 +7,8 @@
 - name: deploy qubinode custom kickstart file
   become: yes
   template:
-    src:  "{{ ks_file }}".j2
-    dest: /mnt/{{ ks_file }}"
+    src:  "{{ ks_file }}.j2"
+    dest: "/mnt/{{ ks_file }}"
     mode: '0644'
 
 - name: copy RHEL 7.6 iso file to usb device

@@ -16,11 +16,11 @@ lang en_US.UTF-8
 # Network information
 # Lan Network eno1 (bottom left facing the back of the lunchbox)
 {%if set_static_ip %}
-network  --bootproto=dhcp --device=eno1 --onboot=on --ipv6=off --activate
+network  --bootproto=static --device={{ qubinode_net_dev }} --gateway={{ qubinode_gw }} --ip={{ qubinode_ip_addr }} --nameserver={{ qubinode_nameserver_ip }} --netmask={{ qubinode_netmask }} --onboot=on --ipv6=off --activate
 {% endif %}
 
 {%if set_static_ip == false %}
-network  --bootproto=static --device={{ qubinode_net_dev }} --gateway={{ qubinode_gw }} --ip={{ qubinode_ip_addr }} --nameserver={{ qubinode_nameserver_ip }} --netmask={{ qubinode_netmask }} --onboot=on --ipv6=off --activate
+network  --bootproto=dhcp --device=eno1 --onboot=on --ipv6=off --activate
 {% endif %}
 
 # Wan Network
@@ -68,6 +68,8 @@ wget
 mlocate
 chrony
 kexec-tools
+git
+curl
 {%if enable_gnome_desktop %}
 # DEVELOPERMODE
 @^graphical-server-environment
