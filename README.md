@@ -64,14 +64,14 @@ Playbook for Super Micro Server with X11SDV-8C-TP8F motherboard
         usb_device: '/dev/sdb'
         root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
         qubi_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
-        set_static_ip: true
+        set_static_ip: false
         qubinode_user: 'qubi'
         qubinode_net_dev: 'eno1'
-        qubinode_ip_addr: '192.168.1.45'
-        qubinode_nameserver_ip: '1.1.1.1'
-        qubinode_netmask: '255.255.255.0'
+        qubinode_ip_addr: ''
+        qubinode_nameserver_ip: ''
+        qubinode_netmask: ''
         qubinode_hostname: 'qubinode-box.example.com'
-        qubinode_gw: '192.168.1.1'
+        qubinode_gw: ''
         iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
         enable_gnome_desktop: false
         ks_file: '/x11sdv-8c-tp8f.ks'
