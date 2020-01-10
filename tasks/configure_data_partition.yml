@@ -7,7 +7,7 @@
 - name: deploy qubinode custom kickstart file
   become: yes
   template:
-    src:  {{ ks_file }}
+    src:  "{{ ks_file }}"
     dest: /mnt/{{ ks_file }}"
     mode: '0644'
 
