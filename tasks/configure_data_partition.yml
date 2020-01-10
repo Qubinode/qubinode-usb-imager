@@ -1,14 +1,14 @@
---- 
+---
 - name: mount data filesystem
   become: yes
   command: >
     /usr/bin/mount "{{ usb_device }}3" /mnt
 
 - name: deploy qubinode custom kickstart file
-  become: yes 
+  become: yes
   template:
-    src: qubinode_rhel76.ks.j2
-    dest: '/mnt/qubinode-rhel7.6.ks'
+    src:  {{ ks_file }}
+    dest: /mnt/{{ ks_file }}"
     mode: '0644'
 
 - name: copy RHEL 7.6 iso file to usb device
@@ -21,4 +21,4 @@
 - name: mount data filesystem
   become: yes
   command: >
-    /usr/bin/umount "{{ usb_device }}3" 
+    /usr/bin/umount "{{ usb_device }}3"
