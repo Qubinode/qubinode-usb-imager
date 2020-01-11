@@ -79,8 +79,14 @@ logvol /  --fstype="xfs" --size=8192 --name=root --vgname=rhel --grow
 logvol swap  --fstype="swap" --size=16064 --name=swap --vgname=rhel
 
 %packages --ignoremissing
+@^virtualization-host-environment
 @base
 @core
+@virtualization-hypervisor
+@virtualization-client
+@virtualization-platform
+@virtualization-tools
+libguestfs-tools
 wget
 mlocate
 chrony
