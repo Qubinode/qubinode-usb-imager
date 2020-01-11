@@ -26,8 +26,9 @@ Role Variables
 
 | Parameter | Default value | Description |
 | --- | --- | --- |
-| iso_grub_dir  | default = [ '/rhel-server-7.6-x86_64-dvd.iso' ]  | set ISO varibale in qubinode kickstart file  |
-| ks_file | default = '/qubinode-rhel7.6.ks' | set KS varibale in qubinode kickstart file |
+| iso_grub_dir  | default = [ '/rhel-server-7.6-x86_64-dvd.iso' ]  | set ISO variable in qubinode kickstart file  |
+| ks_file | default = 'qubinode-rhel7.6.ks' | set KS variable in qubinode kickstart file |
+| ks_file_dir   | default = '/{{ ks_file }}'   |  set KS variable directory  |
 | packages | default = [ 'grub2-efi', 'shim', 'gdisk', 'grub2-efi-modules', 'grub2-efi-x64-modules' ] | required packages |
 | qubinode_hostname | default = 'qubinode-box.example.com' | hostname for qubinode server |
 | set_static_ip  | true  | Configures machine with static ip  |
@@ -63,7 +64,7 @@ Example Playbook for Generic Server
         qubinode_netmask: '255.255.255.0'
         qubinode_hostname: 'qubinode-box.example.com'
         qubinode_gw: '192.168.1.1'
-        iso_grub_dir: 'rhel-server-7.6-x86_64-dvd.iso'
+        iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
         ks_file: 'qubinode-rhel7.6.ks'
 ```
 
@@ -87,7 +88,7 @@ Playbook for Super Micro Server with X11SDV-8C-TP8F motherboard
         qubinode_netmask: ''
         qubinode_hostname: 'qubinode-box.example.com'
         qubinode_gw: ''
-        iso_grub_dir: 'rhel-server-7.6-x86_64-dvd.iso'
+        iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
         enable_gnome_desktop: false
         ks_file: 'x11sdv-8c-tp8f.ks'
 ```

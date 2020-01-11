@@ -1,11 +1,25 @@
-# System authorization information
+#version=DEVEL
+#System authorization information
 auth --enableshadow --passalgo=sha512
+repo --name="Server-HighAvailability" --baseurl=file:///run/install/repo/addons/HighAvailability
+repo --name="Server-ResilientStorage" --baseurl=file:///run/install/repo/addons/ResilientStorage
+# Use CDROM installation media
+cdrom
+# Use text mode install
+text
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use=sda
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+# Reboot after installation
+reboot
+
 # Root password
 rootpw --iscrypted {{ root_pw }}
 
-# install
-cmdline
-reboot
 # Run the Setup Agent on first boot
 ignoredisk --only-use=sda
 # Keyboard layouts
@@ -43,6 +57,9 @@ timezone America/New_York --isUtc
 
 # Set Default username
 user --name={{ qubinode_user }} --password={{ qubi_pw }} --iscrypted --gecos="{{ qubinode_user }} admin"
+
+# Clear the Master Boot Record
+zerombr
 
 ### DISK INFO ###
 ignoredisk --only-use=sda
