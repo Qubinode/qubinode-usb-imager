@@ -1,21 +1,26 @@
 ---
 # defaults file for qubinode-usb-imager
 packages:
-  - grub2-efi 
-  - shim 
-  - gdisk 
-  - grub2-efi-modules 
+  - grub2-efi
+  - shim
+  - gdisk
+  - grub2-efi-modules
   - grub2-efi-x64-modules
 
 rhel_iso_dir: ''
 usb_device: ''
 root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
 qubi_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
+set_static_ip: true
 qubinode_net_dev: ''
 qubinode_ip_addr: ''
 qubinode_nameserver_ip: '1.1.1.1'
 qubinode_netmask: ''
 qubinode_hostname: 'qubinode-box.example.com'
 qubinode_gw: ''
+qubinode_user: 'qubi'
 iso_grub_dir: '/rhel-server-7.7-x86_64-dvd.iso'
-ks_file: '/qubinode-rhel7.7.ks' 
+ks_file: 'qubinode_rhel77.ks'
+ks_file_dir: '/{{ks_file}}'
+enable_gnome_desktop: false
+rhel_version: 7.6
