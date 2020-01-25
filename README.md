@@ -53,6 +53,7 @@ Example Playbook for Generic Server
     - name: qubinode-usb-imager
       vars:
         rhel_iso_dir: '/home/qubi/rhel-server-7.6-x86_64-dvd.iso'
+        rhel_version: 7.6
         usb_device: '/dev/sdb'
         root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
         qubi_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
@@ -77,6 +78,7 @@ Playbook for Super Micro Server with X11SDV-8C-TP8F motherboard
     - name: qubinode-usb-imager
       vars:
         rhel_iso_dir: '/home/qubi/rhel-server-7.6-x86_64-dvd.iso'
+        rhel_version: 7.6
         usb_device: '/dev/sdb'
         root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
         qubi_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"

@@ -23,3 +23,4 @@ iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
 ks_file: 'qubinode-rhel7.6.ks'
 ks_file_dir: '/{{ks_file}}'
 enable_gnome_desktop: false
+rhel_version: 7.6
