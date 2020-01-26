@@ -14,8 +14,8 @@
 - name: copy RHEL iso file to usb device
   become: yes
   copy:
-    src: "{{ iso_file }}"
-    dest: "{{ iso_grub_path }}"
+    src: "{{ rhel_iso_dir }}"
+    dest: "/mnt{{ iso_grub_dir }}"
     mode: '0644'
 
 - name: mount data filesystem

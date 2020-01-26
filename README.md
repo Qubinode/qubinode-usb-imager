@@ -38,6 +38,7 @@ Role Variables
 | qubinode_nameserver_ip | default = '1.1.1.1' | DNS server for qubinode server |
 | qubinode_net_dev | | qubinode network device(exanple: 'eno1')
 | qubinode_netmask | | qubinode host default network netmask(example: '255.255.255.0) |
+| rhel_iso_dir | | location  of rhel-server-7.7-x86_64-dvd.iso (example: '/home/qubiuser/rhel-server-7.7-x86_64-dvd.iso') |
 | root_pw | | root password for qubinode box
 | usb_device | | example: '/dev/sdc' |
 | enable_gnome_desktop  | false  |  Set to true if you would like to install gnome desktop.  |
@@ -55,6 +56,7 @@ Example Playbook for Generic Server
   roles:
     - name: qubinode-usb-imager
       vars:
+        rhel_iso_dir: '/home/qubi/rhel-server-7.7-x86_64-dvd.iso'
         rhel_version: 7.7
         os_disk: sda
         usb_device: '/dev/sdb'
@@ -81,6 +83,7 @@ Playbook for Super Micro Server with X11SDV-8C-TP8F motherboard
   roles:
     - name: qubinode-usb-imager
       vars:
+        rhel_iso_dir: '/home/qubi/rhel-server-7.7-x86_64-dvd.iso'
         rhel_version: 7.7
         usb_device: '/dev/sdb'
         os_disk: sda
