@@ -35,7 +35,7 @@
   shell: "/usr/bin/sleep 5 && /usr/sbin/reboot"
   async: 1
   poll: 0
-  when: partprobe_result.rc == 1
+  when: partprobe_result.rc == 1 and ok_to_reboot|bool
 
 - name: wait for the reboot to complete
   become: yes
@@ -44,7 +44,7 @@
     sleep: 5
     delay: 5
     timeout: 300
-  when: partprobe_result.rc == 1
+  when: partprobe_result.rc == 1 and ok_to_reboot|bool
 
 - name: create efi boot partition
   become: yes
@@ -90,3 +90,7 @@
     fstype: xfs
     dev: "{{ usb_device }}3"
     force: yes
+
+- name: label the data partition filesystem
+  become: yes
+  command: xfs_admin -L qbusbdata "{{ usb_device }}3"
