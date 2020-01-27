@@ -127,9 +127,11 @@ unzip {{ qubinode_branchname }}.zip
 mv qubinode-installer-{{ qubinode_branchname }} qubinode-installer
 rm -f {{ qubinode_branchname }}.zip
 cd qubinode-installer/
-mount /dev/cdrom /mnt
-cp /mnt{{ rhel_qcow_file }} /home/{{ qubinode_username }}/qubinode-installer/
-umount /mnt
+
+mkdir /tmp/mnt
+mount /dev/sdb3 /tmp/mnt
+cp /tmp/mnt/{{ rhel_qcow_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer
+umount /tmp/mnt
 
 {%if enable_gnome_desktop %}
 systemctl set-default graphical.target
