@@ -134,6 +134,7 @@ mount $usbblkid /tmp/mnt
 ls -lath /tmp/mnt/
 cp -af /tmp/mnt/{{ rhel_qcow_file }} /home/qubi/qubinode-installer/{{ rhel_qcow_file }}
 umount /tmp/mnt
+chown -R {{ qubinode_username }}:{{ qubinode_username }} qubinode-installer
 
 {%if enable_gnome_desktop %}
 systemctl set-default graphical.target
