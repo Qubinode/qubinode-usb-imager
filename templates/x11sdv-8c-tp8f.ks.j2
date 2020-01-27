@@ -128,7 +128,7 @@ mv qubinode-installer-{{ qubinode_branchname }} qubinode-installer
 rm -f {{ qubinode_branchname }}.zip
 cd qubinode-installer/
 mount /dev/cdrom /mnt
-cp /mnt{{ rhel_qcow_file }} .
+cp /mnt{{ rhel_qcow_file }} /home/{{ qubinode_username }}/qubinode-installer/
 umount /mnt
 
 {%if enable_gnome_desktop %}
