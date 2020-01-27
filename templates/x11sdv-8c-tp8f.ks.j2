@@ -121,4 +121,15 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %post --log=/root/admin-ks.log\
 ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""
 
+cd /home/{{ qubinode_username }}
+wget "{{ qubinode_github }}/{{ qubinode_branchname }}.zip"
+unzip {{ qubinode_branchname }}.zip
+mv qubinode-installer-{{ qubinode_branchname }} qubinode-installer
+rm -f {{ qubinode_branchname }}.zip
+cd qubinode-installer/
+cp {{ rhel_qcow_file }} .
+
+{%if enable_gnome_desktop %}
+systemctl set-default graphical.target
+{% endif %}
 %end

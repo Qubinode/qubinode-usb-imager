@@ -18,6 +18,19 @@
     dest: "/mnt{{ iso_grub_dir }}"
     mode: '0644'
 
+- name: check if RHEL qcow file exists
+  stat: 
+    path: "{{ rhel_qcow_dir }}"
+  register: qcow_exists 
+
+- name: copy RHEL qcow file to usb device
+  become: yes
+  copy:
+    src: "{{ rhel_qcow_dir }}"
+    dest: "/mnt{{ rhel_qcow_file }}"
+    mode: '0644'
+  when: qcow_exists
+
 - name: mount data filesystem
   become: yes
   command: >

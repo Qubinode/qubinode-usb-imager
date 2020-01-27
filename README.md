@@ -27,6 +27,10 @@ Role Variables
 | Parameter | Default value | Description |
 | --- | --- | --- |
 | iso_grub_dir  | default = [ '/rhel-server-7.7-x86_64-dvd.iso' ]  | set ISO variable in qubinode kickstart file  |
+| rhel_qcow_dir | default = '/home/qubi/rhel-server-7.7-update-2-x86_64-kvm.qcow2' | default RHEL qcow images to be used in qubinode installation | 
+| rhel_qcow_file | default = /rhel-server-7.7-update-2-x86_64-kvm.qcow2 | default RHEL qcow images to be used in qubinode installation | 
+| qubinode_github | default = https://github.com/Qubinode/qubinode-installer/archive | qubinode url to pull qubinode code | 
+| qubinode_branchname | default = 2.2 | qubinode releasae branch that you would like to use | 
 | rhel_version  | default = 7.7 | set RHEL Version  |
 | ks_file | default = 'qubinode_rhel77.ks' | set KS variable in qubinode kickstart file |
 | ks_file_dir   | default = '/{{ ks_file }}'   |  set KS variable directory  |
@@ -57,6 +61,10 @@ Example Playbook for Generic Server
     - name: qubinode-usb-imager
       vars:
         rhel_iso_dir: '/home/qubi/rhel-server-7.7-x86_64-dvd.iso'
+        rhel_qcow_dir: '/home/qubi/rhel-server-7.7-update-2-x86_64-kvm.qcow2'
+        rhel_qcow_file: '/rhel-server-7.7-update-2-x86_64-kvm.qcow2'
+        qubinode_github: 'https://github.com/Qubinode/qubinode-installer/archive/'
+        qubinode_branchname: '2.2'
         rhel_version: 7.7
         os_disk: sda
         usb_device: '/dev/sdb'
@@ -84,6 +92,10 @@ Playbook for Super Micro Server with X11SDV-8C-TP8F motherboard
     - name: qubinode-usb-imager
       vars:
         rhel_iso_dir: '/home/qubi/rhel-server-7.7-x86_64-dvd.iso'
+        rhel_qcow_dir: '/home/qubi/rhel-server-7.7-update-2-x86_64-kvm.qcow2'
+        rhel_qcow_file: '/rhel-server-7.7-update-2-x86_64-kvm.qcow2'
+        qubinode_github: 'https://github.com/Qubinode/qubinode-installer/archive/'
+        qubinode_branchname: '2.2'
         rhel_version: 7.7
         usb_device: '/dev/sdb'
         os_disk: sda
