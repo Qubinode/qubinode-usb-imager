@@ -129,7 +129,7 @@ rm -f {{ qubinode_branchname }}.zip
 cd qubinode-installer/
 
 mkdir -p /tmp/mnt
-usbblkid=$(blkid -L "%VOLNAME%")
+usbblkid=$(blkid  | grep 'LABEL="qbusbdata"' | awk '{print $1}' | tr -d :)
 mount $usbblkid /tmp/mnt
 ls -lath /tmp/mnt/
 cp -af /tmp/mnt/{{ rhel_qcow_file }} /home/qubi/qubinode-installer/{{ rhel_qcow_file }}
