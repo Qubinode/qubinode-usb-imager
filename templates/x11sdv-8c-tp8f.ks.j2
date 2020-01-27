@@ -128,9 +128,11 @@ mv qubinode-installer-{{ qubinode_branchname }} qubinode-installer
 rm -f {{ qubinode_branchname }}.zip
 cd qubinode-installer/
 
-mkdir /tmp/mnt
-mount /dev/sdb3 /tmp/mnt
-cp /tmp/mnt/{{ rhel_qcow_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer
+mkdir -p /tmp/mnt
+usbblkid=$(blkid -L "%VOLNAME%")
+mount $usbblkid /tmp/mnt
+ls -lath /tmp/mnt/
+cp -af /tmp/mnt/{{ rhel_qcow_file }} /home/qubi/qubinode-installer/{{ rhel_qcow_file }}
 umount /tmp/mnt
 
 {%if enable_gnome_desktop %}
