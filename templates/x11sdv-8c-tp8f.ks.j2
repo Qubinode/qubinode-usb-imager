@@ -118,7 +118,7 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %post --nochroot --log=/mnt/sysimage/root/ks-post-nochroot.log
 %end
 
-%post --log=/root/admin-ks.log\
+%post --log=/root/admin-ks.log
 ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""
 
 cd /home/{{ qubinode_username }}
@@ -134,7 +134,7 @@ mount $usbblkid /tmp/mnt
 ls -lath /tmp/mnt/
 cp -af /tmp/mnt/{{ rhel_qcow_file }} /home/qubi/qubinode-installer/{{ rhel_qcow_file }}
 umount /tmp/mnt
-chown -R {{ qubinode_username }}:{{ qubinode_username }} qubinode-installer
+chown -R {{ qubinode_username }}:{{ qubinode_username }} /home/qubi/qubinode-installer
 
 {%if enable_gnome_desktop %}
 systemctl set-default graphical.target
