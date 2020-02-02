@@ -36,7 +36,7 @@ autopart --type=lvm --nohome
 # Partition clearing information
 clearpart --all --initlabel --drives={{ os_disk }}
 
-%packages
+%packages --ignoremissing
 @^virtualization-host-environment
 @base
 @core
@@ -45,11 +45,22 @@ clearpart --all --initlabel --drives={{ os_disk }}
 @virtualization-platform
 @virtualization-tools
 libguestfs-tools
+wget
+mlocate
 chrony
 kexec-tools
 git
 curl
-wget
+{%if enable_gnome_desktop %}
+# DEVELOPERMODE
+@^graphical-server-environment
+@gnome-desktop
+@x-window-system
+@development-and-creative-workstation
+@graphical-administration-tools
+@fonts
+@server-with-gui
+{% endif %}
 %end
 
 %addon com_redhat_kdump --enable --reserve-mb='auto'
@@ -60,4 +71,30 @@ wget
 pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+
+%post --nochroot --log=/mnt/sysimage/root/ks-post-nochroot.log
+%end
+
+%post --log=/root/admin-ks.log
+ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""
+
+cd /home/{{ qubinode_username }}
+wget "{{ qubinode_github }}/{{ qubinode_branchname }}.zip"
+unzip {{ qubinode_branchname }}.zip
+mv qubinode-installer-{{ qubinode_branchname }} qubinode-installer
+rm -f {{ qubinode_branchname }}.zip
+cd qubinode-installer/
+
+mkdir -p /tmp/mnt
+usbblkid=$(blkid  | grep 'LABEL="qbusbdata"' | awk '{print $1}' | tr -d :)
+mount $usbblkid /tmp/mnt
+ls -lath /tmp/mnt/
+cp -af /tmp/mnt/{{ rhel_qcow_file }} /home/{{ qubinode_username }}/qubinode-installer/{{ rhel_qcow_file }}
+umount /tmp/mnt
+chown -R {{ qubinode_username }}:{{ qubinode_username }} /home/{{ qubinode_username }}/qubinode-installer
+
+{%if enable_gnome_desktop %}
+systemctl set-default graphical.target
+{% endif %}
 %end
