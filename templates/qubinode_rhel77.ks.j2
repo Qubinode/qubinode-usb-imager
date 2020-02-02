@@ -1,0 +1,100 @@
+#version=DEVEL
+#System authorization information
+auth --enableshadow --passalgo=sha512
+repo --name="Server-HighAvailability" --baseurl=file:///run/install/repo/addons/HighAvailability
+repo --name="Server-ResilientStorage" --baseurl=file:///run/install/repo/addons/ResilientStorage
+# Use CDROM installation media
+cdrom
+# Use text mode install
+text
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use={{ os_disk }}
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+# Reboot after installation
+reboot
+
+# Network information
+network  --bootproto=static --device={{ qubinode_net_dev }} --gateway={{ qubinode_gw }} --ip={{ qubinode_ip_addr }} --nameserver={{ qubinode_nameserver_ip }} --netmask={{ qubinode_netmask }} --onboot=on --ipv6=auto --activate
+network  --hostname={{ qubinode_hostname }}
+
+# Root password
+rootpw --iscrypted {{ root_pw }}
+# System services
+services --enabled="chronyd"
+# System timezone
+timezone America/New_York --isUtc
+user --name={{ qubinode_username }} --password={{ qubinode_username_pw }} --iscrypted --gecos="{{ qubinode_username_fullname }}"
+# Clear the Master Boot Record
+zerombr
+# System bootloader configuration
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive={{ os_disk }}
+autopart --type=lvm --nohome
+# Partition clearing information
+clearpart --all --initlabel --drives={{ os_disk }}
+
+%packages --ignoremissing
+@^virtualization-host-environment
+@base
+@core
+@virtualization-hypervisor
+@virtualization-client
+@virtualization-platform
+@virtualization-tools
+libguestfs-tools
+wget
+mlocate
+chrony
+kexec-tools
+git
+curl
+{%if enable_gnome_desktop %}
+# DEVELOPERMODE
+@^graphical-server-environment
+@gnome-desktop
+@x-window-system
+@development-and-creative-workstation
+@graphical-administration-tools
+@fonts
+@server-with-gui
+{% endif %}
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb='auto'
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+
+%post --nochroot --log=/mnt/sysimage/root/ks-post-nochroot.log
+%end
+
+%post --log=/root/admin-ks.log
+ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""
+
+cd /home/{{ qubinode_username }}
+wget "{{ qubinode_github }}/{{ qubinode_branchname }}.zip"
+unzip {{ qubinode_branchname }}.zip
+mv qubinode-installer-{{ qubinode_branchname }} qubinode-installer
+rm -f {{ qubinode_branchname }}.zip
+cd qubinode-installer/
+
+mkdir -p /tmp/mnt
+usbblkid=$(blkid  | grep 'LABEL="qbusbdata"' | awk '{print $1}' | tr -d :)
+mount $usbblkid /tmp/mnt
+ls -lath /tmp/mnt/
+cp -af /tmp/mnt/{{ rhel_qcow_file }} /home/{{ qubinode_username }}/qubinode-installer/{{ rhel_qcow_file }}
+umount /tmp/mnt
+chown -R {{ qubinode_username }}:{{ qubinode_username }} /home/{{ qubinode_username }}/qubinode-installer
+
+{%if enable_gnome_desktop %}
+systemctl set-default graphical.target
+{% endif %}
+%end

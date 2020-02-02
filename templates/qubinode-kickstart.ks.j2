@@ -9,7 +9,7 @@ cdrom
 text
 # Run the Setup Agent on first boot
 firstboot --enable
-ignoredisk --only-use=sda
+ignoredisk --only-use={{ os_disk }}
 # Keyboard layouts
 keyboard --vckeymap=us --xlayouts='us'
 # System language
@@ -27,14 +27,14 @@ rootpw --iscrypted {{ root_pw }}
 services --enabled="chronyd"
 # System timezone
 timezone America/New_York --isUtc
-user --name=qubi --password={{ qubi_pw }} --iscrypted --gecos="qubi admin"
+user --name={{ qubinode_username }} --password={{ qubinode_user_pw }} --iscrypted --gecos="{{ qubinode_user_fullname }}"
 # Clear the Master Boot Record
 zerombr
 # System bootloader configuration
-bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=sda
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive={{ os_disk }}
 autopart --type=lvm --nohome
 # Partition clearing information
-clearpart --all --initlabel --drives=sda
+clearpart --all --initlabel --drives={{ os_disk }}
 
 %packages
 @^virtualization-host-environment

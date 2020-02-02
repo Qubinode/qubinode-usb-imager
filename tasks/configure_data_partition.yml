@@ -1,24 +1,37 @@
---- 
+---
 - name: mount data filesystem
   become: yes
   command: >
     /usr/bin/mount "{{ usb_device }}3" /mnt
 
 - name: deploy qubinode custom kickstart file
-  become: yes 
+  become: yes
   template:
-    src: qubinode_rhel76.ks.j2
-    dest: '/mnt/qubinode-rhel7.6.ks'
+    src:  "{{ ks_file }}.j2"
+    dest: "/mnt/{{ ks_file }}"
     mode: '0644'
 
-- name: copy RHEL 7.6 iso file to usb device
+- name: copy RHEL iso file to usb device
   become: yes
   copy:
     src: "{{ rhel_iso_dir }}"
     dest: "/mnt{{ iso_grub_dir }}"
     mode: '0644'
 
+- name: check if RHEL qcow file exists
+  stat: 
+    path: "{{ rhel_qcow_dir }}"
+  register: qcow_exists 
+
+- name: copy RHEL qcow file to usb device
+  become: yes
+  copy:
+    src: "{{ rhel_qcow_dir }}"
+    dest: "/mnt{{ rhel_qcow_file }}"
+    mode: '0644'
+  when: qcow_exists
+
 - name: mount data filesystem
   become: yes
   command: >
-    /usr/bin/umount "{{ usb_device }}3" 
+    /usr/bin/umount "{{ usb_device }}3"
