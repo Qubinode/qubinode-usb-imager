@@ -79,7 +79,7 @@ Example Playbook for Generic Server
         qubinode_hostname: 'qubinode-box.example.com'
         qubinode_gw: '192.168.1.1'
         iso_grub_dir: '/rhel-server-7.7-x86_64-dvd.iso'
-        ks_file: 'qubinode-rhel77.ks'
+        ks_file: 'qubinode_rhel77.ks'
         ok_to_reboot: no
 ```
 
