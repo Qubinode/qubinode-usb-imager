@@ -92,7 +92,7 @@
     unit: MiB
     device: "{{ usb_device }}"
     number: 2
-    flags: [ boot,legacy_boot ]
+    flags: [ boot,legacy_boot,bios_grub ]
     part_start: 201MiB
     part_end: 401MiB
     state: present
