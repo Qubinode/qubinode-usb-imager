@@ -10,7 +10,7 @@
 - name: unmount usb qubinode device
   become: yes
   mount:
-    path: "{ usb_device }}{{ item.num }}"
+    path: "{{ usb_device }}{{ item.num }}"
     state: absent
   with_items:
     - "{{ disk_info.partitions }}"
