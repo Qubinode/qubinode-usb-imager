@@ -125,6 +125,6 @@
 - name: format data partition filesystem
   become: yes
   filesystem:
-    fstype: xfs
+    fstype: ext4
     dev: "{{ usb_device }}3"
     force: yes
