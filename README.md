@@ -45,8 +45,11 @@ Example Playbook
         qubinode_netmask: '255.255.255.0'
         qubinode_hostname: 'qubinode-box.example.com'
         qubinode_gw: '192.168.1.1'
-        iso_grub_dir: '/rhel-server-7.6-x86_64-dvd.iso'
-        ks_file: '/qubinode-rhel7.6.ks' 
+        rhel_os_major_version: '7'
+        rhel_os_minor_version: '8'
+        iso_7_grub_dir: '/rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}}-x86_64-dvd.iso'
+        iso_8_grub_dir: '/rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}}-x86_64.iso'
+        ks_file: '/qubinode-rhel.ks' 
 ```
 License
 -------
