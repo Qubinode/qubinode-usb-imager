@@ -44,7 +44,7 @@
     #sleep: 5
     #delay: 5
     #timeout: 300
-  w3hen: partprobe_result.rc == 1
+  #w3hen: partprobe_result.rc == 1
 
 - name: create efi boot partition
   become: yes
