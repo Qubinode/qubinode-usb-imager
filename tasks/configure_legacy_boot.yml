@@ -39,4 +39,4 @@
 - name: unmount data filesystem
   become: yes
   command: >
-    /usr/bin/umount "{{ usb_device }}3"
+    /usr/bin/umount "{{ usb_device }}2"

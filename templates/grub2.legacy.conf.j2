@@ -131,7 +131,7 @@ fi
 ### END /etc/grub.d/01_users ###
 
 ### BEGIN /etc/grub.d/10_linux ###
-{% if rhel_os_major_version = '7' %}
+{% if rhel_os_major_version == '7' %}
 menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{ rhel_os_major_version}} Kickstart' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
        set ISO={{ iso_7_grub_dir }}
        set KS={{ ks_file }}
@@ -160,7 +160,7 @@ menuentry '[ISO] rhel-server-{{rhel_os_major_version}}.{{rhel_os_major_version}}
        linux (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=$FSUUID:$ISO inst.repo=hd:UUID=$FSUUID:$ISO rhgb quiet
        initrd (loop)/isolinux/initrd.img
 }
-{% elif rhel_os_major_version = '8' %}
+{% elif rhel_os_major_version == '8' %}
 menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{ rhel_os_major_version}} Kickstart' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
        set ISO={{ iso_8_grub_dir}}
        set KS={{ ks_file }}
