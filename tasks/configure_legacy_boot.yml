@@ -25,7 +25,8 @@
     /usr/bin/lsblk -f "{{ usb_device }}" | awk '/xfs /{print $3}'
   register: dev_fsuuid
 
-- debug: 
+- name: display value of fsuuid
+  debug: 
     var: "{{ dev_fsuuid }}"
 
 - name: deploy legacy qubinode custom grub file
