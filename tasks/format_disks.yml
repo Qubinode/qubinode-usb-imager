@@ -82,7 +82,7 @@
     number: 1
     flags: [ esp ]
     part_start: 1MiB
-    part_ended: 201MiB
+    part_end: 201MiB
     state: present
 
 - name: reate legacy boot partition
@@ -94,7 +94,7 @@
     number: 2
     flags: [ boot ]
     part_start: 201MiB
-    part_ended: 401MiB
+    part_end: 401MiB
     state: present
 
 - name: reate legacy boot partition
@@ -105,7 +105,7 @@
     device: "{{ usb_device }}"
     number: 3
     part_start: 201MiB
-    part_ended: 100%
+    part_end: 100%
     state: present
 
 - name: format efi boot grub filesystem
