@@ -44,34 +44,69 @@
     #sleep: 5
     #delay: 5
     #timeout: 300
-  #w3hen: partprobe_result.rc == 1
+  #when: partprobe_result.rc == 1
+
+# - name: create efi boot partition
+#   become: yes
+#   shell: >
+#     #/bin/echo -e "n\np\n1\n\n100M\nt\nef00\nw\nY" | sudo gdisk "{{ usb_device }}"
+#     /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary fat32 1MiB 101MiB set 1 esp on
+#   args:
+#     executable: /bin/bash
+#   ignore_errors: True
+
+# - name: create legacy boot partition
+#   become: yes
+#   shell: >
+#     #/bin/echo -e "n\np\n2\n\n200M\nt\nef02\nw\nY"| sudo gdisk "{{ usb_device }}"
+#     /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary ext4 101MiB 301MiB set 1 boot on
+#   args:
+#     executable: /bin/bash
+#   ignore_errors: True
+
+# - name: create data boot partition
+#   become: yes
+#   shell: >
+#     #/bin/echo -e "n\np\n3\n\n\nt\n8300\nw\nY"| sudo gdisk "{{ usb_device }}"
+#     /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary ext4 301MiB 100% 
+#   args:
+#     executable: /bin/bash
+#   ignore_errors: True
 
 - name: create efi boot partition
   become: yes
-  shell: >
-    #/bin/echo -e "n\np\n1\n\n100M\nt\nef00\nw\nY" | sudo gdisk "{{ usb_device }}"
-    /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary fat32 1MiB 101MiB set 1 esp on
-  args:
-    executable: /bin/bash
-  ignore_errors: True
+  parted:
+    label: gpt
+    unit: MiB
+    device: "{{ usb_device }}"
+    number: 1
+    flags: [ esp ]
+    part_start: 1MiB
+    part_ended: 201MiB
+    state: present
 
-- name: create legacy boot partition
+- name: reate legacy boot partition
   become: yes
-  shell: >
-    #/bin/echo -e "n\np\n2\n\n200M\nt\nef02\nw\nY"| sudo gdisk "{{ usb_device }}"
-    /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary ext4 101MiB 301MiB set 1 boot on
-  args:
-    executable: /bin/bash
-  ignore_errors: True
+  parted:
+    label: gpt
+    unit: MiB
+    device: "{{ usb_device }}"
+    number: 2
+    flags: [ boot ]
+    part_start: 201MiB
+    part_ended: 401MiB
+    state: present
 
-- name: create data boot partition
+- name: reate legacy boot partition
   become: yes
-  shell: >
-    #/bin/echo -e "n\np\n3\n\n\nt\n8300\nw\nY"| sudo gdisk "{{ usb_device }}"
-    /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary ext4 301MiB 100% set 1 boot on
-  args:
-    executable: /bin/bash
-  ignore_errors: True
+  parted:
+    label: gpt
+    unit: MiB
+    device: "{{ usb_device }}"
+    number: 3
+    part_start: 201MiB
+    part_ended: 100%
+    state: present
 
 - name: format efi boot grub filesystem
   become: yes
