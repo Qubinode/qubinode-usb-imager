@@ -49,7 +49,8 @@
 - name: create efi boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n1\n\n100M\nt\nef00\nw\nY" | sudo gdisk "{{ usb_device }}"
+    #/bin/echo -e "n\np\n1\n\n100M\nt\nef00\nw\nY" | sudo gdisk "{{ usb_device }}"
+    /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary fat32 1MiB 101MiB set 1 esp on
   args:
     executable: /bin/bash
   ignore_errors: True
@@ -57,7 +58,8 @@
 - name: create legacy boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n2\n\n200M\nt\nef02\nw\nY"| sudo gdisk "{{ usb_device }}"
+    #/bin/echo -e "n\np\n2\n\n200M\nt\nef02\nw\nY"| sudo gdisk "{{ usb_device }}"
+    /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary ext4 101MiB 301MiB set 1 boot on
   args:
     executable: /bin/bash
   ignore_errors: True
@@ -65,7 +67,8 @@
 - name: create data boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n3\n\n\nt\n8300\nw\nY"| sudo gdisk "{{ usb_device }}"
+    #/bin/echo -e "n\np\n3\n\n\nt\n8300\nw\nY"| sudo gdisk "{{ usb_device }}"
+    /usr/sbin/parted -a optimal "{{ usb_device }}" mkpart primary ext4 301MiB 100% set 1 boot on
   args:
     executable: /bin/bash
   ignore_errors: True
