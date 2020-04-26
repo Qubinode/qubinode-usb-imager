@@ -7,13 +7,13 @@
     unit: MiB
   register: disk_info
 
-- name: unmount usb qubinode device
-  become: yes
-  mount:
-    path: "{{ usb_device }}{{ item.num }}"
-    state: absent
-  with_items:
-    - "{{ disk_info.partitions }}"
+# - name: unmount usb qubinode device
+#   become: yes
+#   mount:
+#     path: "{{ usb_device }}{{ item.num }}"
+#     state: absent
+#   with_items:
+#     - "{{ disk_info.partitions }}"
   
 - name: remove all partitions from disk 
   parted:
@@ -77,7 +77,6 @@
   become: yes
   parted:
     label: gpt
-    unit: MiB
     device: "{{ usb_device }}"
     number: 1
     flags: [ esp ]
@@ -89,7 +88,6 @@
   become: yes
   parted:
     label: gpt
-    unit: MiB
     device: "{{ usb_device }}"
     number: 2
     flags: [ boot ]
@@ -97,11 +95,10 @@
     part_end: 401MiB
     state: present
 
-- name: reate legacy boot partition
+- name: create legacy boot partition
   become: yes
   parted:
     label: gpt
-    unit: MiB
     device: "{{ usb_device }}"
     number: 3
     part_start: 201MiB
