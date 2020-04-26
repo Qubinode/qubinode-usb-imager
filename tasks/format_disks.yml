@@ -104,7 +104,7 @@
     unit: MiB
     device: "{{ usb_device }}"
     number: 3
-    part_start: 201MiB
+    part_start: 401MiB
     part_end: 100%
     state: present
 
