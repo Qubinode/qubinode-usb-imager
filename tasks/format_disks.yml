@@ -30,21 +30,21 @@
   register: partprobe_result
   ignore_errors: True
 
-- name: reboot if partprobe fails
-  become: yes
-  shell: "/usr/bin/sleep 5 && /usr/sbin/reboot"
-  async: 1
-  poll: 0
-  when: partprobe_result.rc == 1
+#- name: reboot if partprobe fails
+#  become: yes
+#  shell: "/usr/bin/sleep 5 && /usr/sbin/reboot"
+#  async: 1
+#  poll: 0
+# when: partprobe_result.rc == 1
 
-- name: wait for the reboot to complete
-  become: yes
-  wait_for_connection:
-    connect_timeout: 20
-    sleep: 5
-    delay: 5
-    timeout: 300
-  when: partprobe_result.rc == 1
+#- name: wait for the reboot to complete
+ # become: yes
+  #wait_for_connection:
+   # connect_timeout: 20
+    #sleep: 5
+    #delay: 5
+    #timeout: 300
+  w3hen: partprobe_result.rc == 1
 
 - name: create efi boot partition
   become: yes
