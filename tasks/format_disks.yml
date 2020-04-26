@@ -85,19 +85,19 @@
     part_end: 201MiB
     state: present
 
-- name: reate legacy boot partition
+- name: create legacy boot partition
   become: yes
   parted:
     label: gpt
     unit: MiB
     device: "{{ usb_device }}"
     number: 2
-    flags: [ boot ]
+    flags: [ boot,legacy_boot ]
     part_start: 201MiB
     part_end: 401MiB
     state: present
 
-- name: create legacy boot partition
+- name: create data partition
   become: yes
   parted:
     label: gpt
