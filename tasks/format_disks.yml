@@ -77,9 +77,10 @@
   become: yes
   parted:
     label: gpt
+    unit: MiB
     device: "{{ usb_device }}"
     number: 1
-    flags: [ esp ]
+    flags: [ boot ]
     part_start: 1MiB
     part_end: 201MiB
     state: present
@@ -88,6 +89,7 @@
   become: yes
   parted:
     label: gpt
+    unit: MiB
     device: "{{ usb_device }}"
     number: 2
     flags: [ boot ]
@@ -99,6 +101,7 @@
   become: yes
   parted:
     label: gpt
+    unit: MiB
     device: "{{ usb_device }}"
     number: 3
     part_start: 201MiB
