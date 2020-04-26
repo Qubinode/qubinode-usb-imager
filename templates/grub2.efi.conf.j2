@@ -188,8 +188,9 @@ menuentry '[ISO] rhel-server-{{rhel_os_major_version}}.{{rhel_os_major_version}}
        insmod xfs
        linuxefi (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=$FSUUID:$ISO inst.repo=hd:UUID=$FSUUID:$ISO rhgb quiet
        initrdefi (loop)/isolinux/initrd.img
-{% endif %}
+
 }
+{% endif %}
 menuentry "Boot from next device"  {
  load_video
  exit
