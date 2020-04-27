@@ -39,5 +39,5 @@
 - name: unmount efi filesystem
   become: yes
   command: >
-    /usr/bin/umount "{{ usb_device }}1" --force
+    /usr/bin/umount "{{ usb_device }}1" 
   ignore_errors: True
