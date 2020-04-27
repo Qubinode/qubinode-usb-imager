@@ -31,5 +31,4 @@
   become: yes
   command: >
     /usr/bin/umount "{{ usb_device }}3" --force
-  mount:
-
+  ignore_errors: True
