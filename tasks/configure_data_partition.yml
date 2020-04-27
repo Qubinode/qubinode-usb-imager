@@ -17,7 +17,7 @@
     src: "{{ rhel_iso_dir }}"
     dest: "/mnt{{ iso_7_grub_dir }}"
     mode: '0644'
-  when: rhel_os_major_version='7'
+  when: rhel_os_major_version == '7'
 
 - name: copy {{rhel_os_major_version}}.{{rhel_os_minor_version}} iso file to usb device
   become: yes
@@ -25,7 +25,7 @@
     src: "{{ rhel_iso_dir }}"
     dest: "/mnt{{ iso_8_grub_dir }}"
     mode: '0644'
-  when: rhel_os_major_version='8'
+  when: rhel_os_major_version == '8'
 
 - name: unmount data filesystem
   become: yes
