@@ -38,8 +38,5 @@
 
 - name: unmount efi filesystem
   become: yes
-  #command: >
-  #  /usr/bin/umount "{{ usb_device }}1" 
-  mount:
-    path: "{{ usb_device }}1" 
-    state: unmounted
+  command: >
+    /usr/bin/umount "{{ usb_device }}1" --force

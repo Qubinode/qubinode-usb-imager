@@ -38,8 +38,5 @@
 
 - name: unmount data filesystem
   become: yes
-  #command: >
-  #  /usr/bin/umount "{{ usb_device }}2"
-  mount:
-    path: "{{ usb_device }}2" 
-    state: unmounted
+  command: >
+    /usr/bin/umount "{{ usb_device }}2" --force
