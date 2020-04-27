@@ -41,5 +41,5 @@
   #command: >
   #  /usr/bin/umount "{{ usb_device }}2"
   mount:
-    path: "{{ usb_device }}1" 
+    path: "{{ usb_device }}2" 
     state: unmounted
