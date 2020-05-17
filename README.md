@@ -32,7 +32,7 @@ Role Variables
 | qubinode_github | default = https://github.com/Qubinode/qubinode-installer/archive | qubinode url to pull qubinode code | 
 | qubinode_branchname | default = 2.2 | qubinode releasae branch that you would like to use | 
 | rhel_version  | default = 7.7 | set RHEL Version  |
-| ks_file | default = 'qubinode_rhel77.ks' | set KS variable in qubinode kickstart file |
+| ks_file | default = 'qubinode-kickstart.ks', options: qubinode-kickstart.ks, x11sdv-8c-tp8f.ks, qubinode_rhel.ks | set KS variable in qubinode kickstart file |
 | ks_file_dir   | default = '/{{ ks_file }}'   |  set KS variable directory  |
 | packages | default = [ 'grub2-efi', 'shim', 'gdisk', 'grub2-efi-modules', 'grub2-efi-x64-modules' ] | required packages |
 | qubinode_hostname | default = 'qubinode-box.example.com' | hostname for qubinode server |

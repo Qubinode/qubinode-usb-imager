@@ -1,8 +1,16 @@
 #version=DEVEL
 #System authorization information
 auth --enableshadow --passalgo=sha512
+{% if rhel_os_major_version == '7' %}
 repo --name="Server-HighAvailability" --baseurl=file:///run/install/repo/addons/HighAvailability
 repo --name="Server-ResilientStorage" --baseurl=file:///run/install/repo/addons/ResilientStorage
+# Use text mode install
+text
+{% elif rhel_os_major_version == '8' %}
+repo --name="AppStream" --baseurl=file:///run/install/repo/AppStream
+# Use grapical mode install
+graphical
+{%endif%}
 # Use CDROM installation media
 cdrom
 # Use text mode install

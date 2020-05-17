@@ -8,6 +8,7 @@ packages:
   - grub2-efi-x64-modules
 
 
+rhel_image_dir: '/root/'
 usb_device: ''
 root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
 qubi_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
@@ -22,14 +23,20 @@ qubinode_netmask: ''
 qubinode_hostname: 'qubinode-box.example.com'
 qubinode_gw: ''
 qubinode_user: 'qubi'
-iso_grub_dir: '/rhel-server-7.7-x86_64-dvd.iso'
-rhel_qcow_dir: '/home/qubi/rhel-server-7.7-update-2-x86_64-kvm.qcow2'
-rhel_qcow_file: '/rhel-server-7.7-update-2-x86_64-kvm.qcow2'
+rhel_os_major_version: '7'
+rhel_os_minor_version: '8'
+iso_7_file: 'rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}}-x86_64-dvd.iso'
+iso_8_file: 'rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}}-x86_64.iso'
+#iso_7_grub_dir: '/{{ iso_7_file }}'
+#iso_8_grub_dir: '/{{ iso_8_file }}'
+qcow_image_file: 'rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}}-update-2-x86_64-kvm.qcow2'
+#qcow_image_grub_dir: '/rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}}-update-2-x86_64-kvm.qcow2'
+qcow_image_loc: '{{ rhel_image_dir }}/{{ qcow_image_file }}'
+rhel_iso_7_loc: '{{ rhel_image_dir }}/{{ iso_7_file }}'
+rhel_iso_8_loc: '{{ rhel_image_dir }}/{{ iso_8_file }}'
 qubinode_github: 'https://github.com/Qubinode/qubinode-installer/archive/'
-qubinode_branchname: '2.2'
-ks_file: 'qubinode_rhel77.ks'
-ks_file_dir: '/{{ks_file}}'
+qubinode_branchname: 'dev'
+ks_file: 'qubinode_rhel.ks'
 enable_gnome_desktop: false
-rhel_version: 7.7
-os_disk: sda
-ok_to_reboot: no
+os_disk: 'sda'
+ok_to_resdaboot: no

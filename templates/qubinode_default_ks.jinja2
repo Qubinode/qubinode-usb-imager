@@ -13,8 +13,6 @@ graphical
 {%endif%}
 # Use CDROM installation media
 cdrom
-# Use text mode install
-text
 # Run the Setup Agent on first boot
 firstboot --enable
 ignoredisk --only-use={{ os_disk }}
@@ -29,22 +27,35 @@ reboot
 network  --bootproto=static --device={{ qubinode_net_dev }} --gateway={{ qubinode_gw }} --ip={{ qubinode_ip_addr }} --nameserver={{ qubinode_nameserver_ip }} --netmask={{ qubinode_netmask }} --onboot=on --ipv6=auto --activate
 network  --hostname={{ qubinode_hostname }}
 
-# Root password
-rootpw --iscrypted {{ root_pw }}
+# Enable SELinux
+selinux --enforcing
+
 # System services
 services --enabled="chronyd"
+
+# Root password
+rootpw --iscrypted {{ root_pw }}
+
+# System services
+services --enabled="chronyd"
+
 # System timezone
 timezone America/New_York --isUtc
-user --name={{ qubinode_username }} --password={{ qubinode_user_pw }} --iscrypted --gecos="{{ qubinode_user_fullname }}"
+
+# Set Default username
+user --name=qubi --password={{ qubi_pw }} --iscrypted --gecos="qubi admin"
+
 # Clear the Master Boot Record
 zerombr
+
 # System bootloader configuration
 bootloader --append=" crashkernel=auto" --location=mbr --boot-drive={{ os_disk }}
+
 autopart --type=lvm --nohome
 # Partition clearing information
 clearpart --all --initlabel --drives={{ os_disk }}
 
-%packages
+%packages --ignoremissing --multilib
 @^virtualization-host-environment
 @base
 @core
@@ -52,16 +63,65 @@ clearpart --all --initlabel --drives={{ os_disk }}
 @virtualization-client
 @virtualization-platform
 @virtualization-tools
+@development
+curl
+curl-devel
 libguestfs-tools
 chrony
 kexec-tools
 git
-curl
+git-core
 wget
 %end
 
 %addon com_redhat_kdump --enable --reserve-mb='auto'
 
+%end
+
+%post --nochroot --erroronfail --log=/mnt/sysimage/root/qubinode_installer-post.log
+ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""
+
+cd /mnt/sysimage/home/{{ qubinode_username }}
+wget "{{ qubinode_github }}/{{ git_branch_name }}.zip"
+unzip {{ git_branch_name }}.zip
+mv qubinode-installer-{{ git_branch_name }} qubinode-installer
+%end
+
+
+%post --nochroot --erroronfail --log=/mnt/sysimage/root/ks-post.log
+cp -af /run/install/isodir/boot/iso/{{ qcow_image_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer/
+%end
+
+%post --log=/mnt/sysimage/root/qubinode_service-post.log
+chown -Rf {{ qubinode_username }}:{{ qubinode_username }} /home/{{ qubinode_username }}/qubinode-installer
+chmod u+x /home/{{ qubinode_username }}/qubinode-installer/qubinode-installer
+cat > /etc/systemd/system/qubinode-installer.service << EOF
+[Unit]
+Description=Run qubinode installer at first boot
+DefaultDependencies=no
+Conflicts=shutdown.target
+After=systemd-readahead-collect.service systemd-readahead-replay.service systemd-remount-fs.service
+Before=getty@tty6.service gdm.service
+after=getty@tty6.service gdm.service
+
+[Service]
+Type=oneshot
+User={{ qubinode_username }}
+RemainAfterExit=yes
+TTYPath=/dev/tty6
+ExecStartPre=/usr/bin/sleep 5
+ExecStartPre=/usr/bin/chvt 6
+ExecStartPre=/usr/bin/clear
+ExecStart=/home/{{ qubinode_username }}/qubinode-installer/qubinode-installer
+TimeoutSec=0
+StandardOutput=tty
+StandardInput=tty
+StandardError=tty
+
+[Install]
+WantedBy=default.target
+EOF
+systemctl enable qubinode-installer
 %end
 
 %anaconda
