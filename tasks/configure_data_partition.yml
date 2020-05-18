@@ -8,14 +8,14 @@
   become: yes
   template:
     src:  "{{ ks_file }}.j2"
-    dest: "/mnt/{{ item }}"
+    dest: "/mnt/{{ ks_file }}"
     mode: '0644'
 
 - name: copy RHEL {{ iso_7_file }} iso file to usb device
   become: yes
   copy:
     src: "{{ rhel_iso_7_loc }}"
-    dest: "/mnt{{ iso_7_file }}"
+    dest: "/mnt/{{ iso_7_file }}"
     mode: '0644'
   when: rhel_os_major_version == '7'
 
@@ -23,7 +23,7 @@
   become: yes
   copy:
     src: "{{ rhel_iso_8_loc }}"
-    dest: "/mnt{{ iso_8_file }}"
+    dest: "/mnt/{{ iso_8_file }}"
     mode: '0644'
   when: rhel_os_major_version == '8'
 
@@ -36,7 +36,7 @@
   become: yes
   copy:
     src: "{{  qcow_image_loc }}"
-    dest: "/mnt{{ rhel_qcow_file }}"
+    dest: "/mnt/{{ rhel_qcow_file }}"
     mode: '0644'
   when: qcow_exists
 
