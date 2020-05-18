@@ -132,7 +132,7 @@ fi
 
 ### BEGIN /etc/grub.d/10_linux ###
 {% if rhel_os_major_version == '7' %}
-menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{ rhel_os_minor_version}}  {{ kickstsarts }} Kickstart' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
+menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{ rhel_os_minor_version}}  {{ ks_file }} Kickstart' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
        set ISO=/{{ iso_7_file }}
        set KS=/{{ ks_file }}
        set FSUUID={{ dev_fsuuid.stdout }}
@@ -148,8 +148,8 @@ menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{ rhel_os_mino
        initrdefi (loop)/isolinux/initrd.img
 }
 
-menuentry '[ISO] rhel-server-{{ rhel_version }}-x86_64-dvd' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
-       set ISO=/{{ iso_file }}
+menuentry '[ISO] rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}}-x86_64-dvd' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
+       set ISO=/{{ iso_7_file  }}
        set FSUUID={{ dev_fsuuid.stdout }}
        search --fs-uuid --set=root $FSUUID
        loopback loop $ISO
@@ -163,7 +163,7 @@ menuentry '[ISO] rhel-server-{{ rhel_version }}-x86_64-dvd' --class rhel fedora 
        initrdefi (loop)/isolinux/initrd.img
 }
 {% elif rhel_os_major_version == '8' %}
-menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}} Kickstart' --class fedora --class gnu-linux --class gnu --class os {
+menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}} {{ ks_file }} Kickstart' --class fedora --class gnu-linux --class gnu --class os {
        set ISO=/{{ iso_8_file }}
        set KS=/{{ ks_file }}
        set FSUUID={{ dev_fsuuid.stdout }}
