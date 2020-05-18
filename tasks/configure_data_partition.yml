@@ -14,7 +14,7 @@
 - name: check if RHEL iso file exists
   stat: 
     path: "{{ rhel_iso_loc }}"
-  register: iso_exists 
+  register: iso_exists|bool
 
 - name: copy RHEL {{ iso_file }} file to usb device
   become: yes
@@ -22,7 +22,7 @@
     src: "{{ rhel_iso_loc }}"
     dest: "/mnt/{{ iso_file }}"
     mode: '0644'
-  when: iso_exists 
+  when: iso_exists|bool
   
 
 # - name: copy RHEL {{ iso_file }} iso file to usb device
@@ -36,15 +36,15 @@
 - name: check if RHEL qcow file exists
   stat: 
     path: "{{ qcow_image_loc }}"
-  register: qcow_exists 
+  register: qcow_exists|bool
 
 - name: copy RHEL qcow file to usb device
   become: yes
   copy:
     src: "{{  qcow_image_loc }}"
-    dest: "/mnt/{{ rhel_qcow_file }}"
+    dest: "/mnt/{{ qcow_image_file }}"
     mode: '0644'
-  when: qcow_exists
+  when: qcow_exists|bool
 
 - name: unmount data filesystem
   become: yes
