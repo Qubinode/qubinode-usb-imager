@@ -36,7 +36,7 @@
 - name: check if RHEL qcow file exists
   stat: 
     path: "{{ qcow_image_loc }}"
-  register: qcow_exists|bool
+  register: qcow_exists
 
 - name: copy RHEL qcow file to usb device
   become: yes
