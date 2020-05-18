@@ -13,7 +13,7 @@
 
 - name: check if RHEL iso file exists
   stat: 
-    path: "{{ rhel_image_dir }}/{{ iso_file }}"
+    path: "{{ rhel_iso_loc }}"
   register: iso_exists 
 
 - name: copy RHEL {{ iso_file }} iso file to usb device

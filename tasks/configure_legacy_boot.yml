@@ -2,7 +2,7 @@
 - name: mount data filesystem
   become: yes
   command: >
-    /usr/bin/mount "{{ usb_device }}3" /mnt
+    /usr/bin/mount "{{ usb_device }}2" /mnt
 
 - name: create data boot directory
   file:
@@ -38,4 +38,4 @@
 - name: unmount legacy filesystem
   become: yes
   command: >
-    /usr/bin/umount "{{ usb_device }}3"
+    /usr/bin/umount "{{ usb_device }}2"
