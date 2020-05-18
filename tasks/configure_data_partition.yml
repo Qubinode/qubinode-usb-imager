@@ -52,3 +52,4 @@
   become: yes
   command: >
     /usr/bin/umount "{{ usb_device }}3"
+  ignore_errors: True
