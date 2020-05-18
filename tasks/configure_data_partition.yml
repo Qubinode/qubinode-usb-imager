@@ -22,7 +22,7 @@
     src: "{{ rhel_iso_loc }}"
     dest: "/mnt/{{ iso_file }}"
     mode: '0644'
-  when: iso_exists|bool
+  #when: iso_exists|bool
   
 
 # - name: copy RHEL {{ iso_file }} iso file to usb device
@@ -44,7 +44,7 @@
     src: "{{  qcow_image_loc }}"
     dest: "/mnt/{{ qcow_image_file }}"
     mode: '0644'
-  when: qcow_exists|bool
+  #when: qcow_exists|bool
 
 - name: unmount data filesystem
   become: yes
