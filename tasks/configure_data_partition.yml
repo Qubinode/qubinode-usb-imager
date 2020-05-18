@@ -16,7 +16,7 @@
     path: "{{ rhel_iso_loc }}"
   register: iso_exists 
 
-- name: copy RHEL {{ iso_file }} iso file to usb device
+- name: copy RHEL {{ iso_file }} file to usb device
   become: yes
   copy:
     src: "{{ rhel_iso_loc }}"
