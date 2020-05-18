@@ -14,7 +14,7 @@ root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz
 set_static_ip: true
 qubinode_user_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
 qubinode_username: 'qubi'
-qubinode_user_fullname: 'Qubi Admin'
+qubinode_username_fullname: 'Qubi Admin'
 qubinode_net_dev: ''
 qubinode_ip_addr: ''
 qubinode_nameserver_ip: '1.1.1.1'

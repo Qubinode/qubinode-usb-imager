@@ -35,7 +35,7 @@
     dest: '/mnt/boot/grub2/grub.cfg'
     mode: '0644'
 
-- name: unmount data filesystem
+- name: unmount legacy filesystem
   become: yes
   command: >
     /usr/bin/umount "{{ usb_device }}3"
