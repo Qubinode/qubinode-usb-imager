@@ -8,7 +8,7 @@ packages:
   - grub2-efi-x64-modules
 
 
-rhel_image_dir: '/root/'
+rhel_image_dir: '/root'
 usb_device: ''
 root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
 set_static_ip: true
