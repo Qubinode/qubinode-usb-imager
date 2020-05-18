@@ -11,10 +11,10 @@ repo --name="AppStream" --baseurl=file:///run/install/repo/AppStream
 # Use grapical mode install
 graphical
 {%endif%}
+
 # Use CDROM installation media
 cdrom
-# Use text mode install
-text
+
 # Run the Setup Agent on first boot
 firstboot --enable
 ignoredisk --only-use={{ os_disk }}

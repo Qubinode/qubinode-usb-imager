@@ -4,6 +4,8 @@
   command: >
     /usr/bin/mount "{{ usb_device }}3" /mnt
 
+ 
+ 
 - name: deploy qubinode custom kickstart files
   become: yes
   template:

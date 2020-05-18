@@ -94,3 +94,13 @@
 - name: label the data partition filesystem
   become: yes
   command: xfs_admin -L qbusbdata "{{ usb_device }}3"
+
+- name: create efi and data mount points
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+  - '/media/efi'
+  - '/media/data'  
