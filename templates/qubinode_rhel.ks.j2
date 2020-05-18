@@ -35,7 +35,7 @@ rootpw --iscrypted {{ root_pw }}
 services --enabled="chronyd"
 # System timezone
 timezone America/New_York --isUtc
-user --name={{ qubinode_username }} --password={{ qubinode_username_pw }} --iscrypted --gecos="{{ qubinode_username_fullname }}"
+user --name={{ qubinode_username }} --password={{ qubinode_user_pw }} --iscrypted --gecos="{{ qubinode_username_fullname }}"
 # Clear the Master Boot Record
 zerombr
 # System bootloader configuration

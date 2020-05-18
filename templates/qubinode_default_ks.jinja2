@@ -43,7 +43,7 @@ services --enabled="chronyd"
 timezone America/New_York --isUtc
 
 # Set Default username
-user --name=qubi --password={{ qubi_pw }} --iscrypted --gecos="qubi admin"
+user --name=qubi --password={{ qubinode_user_pw }} --iscrypted --gecos="qubi admin"
 
 # Clear the Master Boot Record
 zerombr
@@ -89,7 +89,7 @@ mv qubinode-installer-{{ git_branch_name }} qubinode-installer
 
 
 %post --nochroot --erroronfail --log=/mnt/sysimage/root/ks-post.log
-cp -af /run/install/isodir/boot/iso/{{ qcow_image_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer/
+cp -af /run/install/isodir/{{ qcow_image_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer/
 %end
 
 %post --log=/mnt/sysimage/root/qubinode_service-post.log
@@ -102,7 +102,7 @@ DefaultDependencies=no
 Conflicts=shutdown.target
 After=systemd-readahead-collect.service systemd-readahead-replay.service systemd-remount-fs.service
 Before=getty@tty6.service gdm.service
-after=getty@tty6.service gdm.service
+After=getty@tty6.service gdm.service
 
 [Service]
 Type=oneshot
