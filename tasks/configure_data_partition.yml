@@ -11,21 +11,27 @@
     dest: "/mnt/{{ ks_file }}"
     mode: '0644'
 
-- name: copy RHEL {{ iso_7_file }} iso file to usb device
-  become: yes
-  copy:
-    src: "{{ rhel_iso_7_loc }}"
-    dest: "/mnt/{{ iso_7_file }}"
-    mode: '0644'
-  when: rhel_os_major_version == '7'
+- name: check if RHEL iso file exists
+  stat: 
+    path: "{{ rhel_image_dir }}/{{ iso_file }}"
+  register: iso_exists 
 
-- name: copy RHEL {{ iso_8_file }} iso file to usb device
+- name: copy RHEL {{ iso_file }} iso file to usb device
   become: yes
   copy:
-    src: "{{ rhel_iso_8_loc }}"
-    dest: "/mnt/{{ iso_8_file }}"
+    src: "{{ rhel_iso_loc }}"
+    dest: "/mnt/{{ iso_file }}"
     mode: '0644'
-  when: rhel_os_major_version == '8'
+  when: iso_exists 
+  
+
+# - name: copy RHEL {{ iso_file }} iso file to usb device
+#   become: yes
+#   copy:
+#     src: "{{ rhel_iso_8_loc }}"
+#     dest: "/mnt/{{ iso_file }}"
+#     mode: '0644'
+#   when: rhel_os_major_version == '8'
 
 - name: check if RHEL qcow file exists
   stat: 
