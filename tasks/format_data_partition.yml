@@ -1,0 +1,21 @@
+---
+- name: create data boot partition
+  become: yes
+  shell: >
+    /usr/sbin/parted -s "{{ usb_device }}" mkpart primary 551MiB 100%"
+  args:
+    executable: /bin/bash
+  ignore_errors: True
+
+- name: format efi boot grub filesystem
+  become: yes
+  shell: >
+    /usr/sbin/mkfs.xfs "{{ usb_device }}2"
+  args:
+    executable: /bin/bash
+  ignore_errors: True 
+
+- name: label the data partition filesystem
+  become: yes
+  command: xfs_admin -L qbusbdata "{{ usb_device }}2"
+

@@ -46,51 +46,42 @@
     timeout: 300
   when: partprobe_result.rc == 1 and ok_to_reboot|bool
 
-- name: create efi boot partition
+- name: create msdos boot label
   become: yes
   shell: >
-    /bin/echo -e "n\np\n1\n\n100M\nt\nef00\nw\nY" | sudo gdisk "{{ usb_device }}"
+    /usr/sbin/parted -s "{{ usb_device }}" mklabel msdos
   args:
     executable: /bin/bash
   ignore_errors: True
 
-- name: create legacy boot partition
+- name: create msdos boot label
   become: yes
   shell: >
-    /bin/echo -e "n\np\n2\n\n200M\nt\nef02\nw\nY"| sudo gdisk "{{ usb_device }}"
+    /usr/sbin/parted -s "{{ usb_device }}" mklabel msdos
   args:
     executable: /bin/bash
   ignore_errors: True
 
-- name: create data boot partition
+- name: create EFI boot partition
   become: yes
   shell: >
-    /bin/echo -e "n\np\n3\n\n\nt\n8300\nw\nY"| sudo gdisk "{{ usb_device }}"
+    /usr/sbin/parted -s "{{ usb_device }}" mkpart primary 1MiB 551MiB"
   args:
     executable: /bin/bash
   ignore_errors: True
+
+- name: enable boot flag on EFI partition
+  become: yes
+  shell: >
+    /usr/sbin/parted -s "{{ usb_device }}" set 1 boot on
+  args:
+    executable: /bin/bash
+  ignore_errors: True 
 
 - name: format efi boot grub filesystem
   become: yes
-  filesystem:
-    fstype: vfat
-    dev: "{{ usb_device }}1"
-    force: yes
-
-- name: format legacy boot grub filesystem
-  become: yes
-  filesystem:
-    fstype: ext4
-    dev: "{{ usb_device }}2"
-    force: yes 
-
-- name: format data partition filesystem
-  become: yes
-  filesystem:
-    fstype: xfs
-    dev: "{{ usb_device }}3"
-    force: yes
-
-- name: label the data partition filesystem
-  become: yes
-  command: xfs_admin -L qbusbdata "{{ usb_device }}3"
+  shell: >
+    /usr/sbin/parted mkfs.fat -F32 "{{ usb_device }}1"
+  args:
+    executable: /bin/bash
+  ignore_errors: True 
