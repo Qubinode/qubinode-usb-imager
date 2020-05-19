@@ -56,7 +56,7 @@
 
 - name: create EFI boot partition
   become: yes
-  command: /usr/sbin/parted -s "{{ usb_device }}" mkpart primary 1MiB 551MiB"
+  command: /usr/sbin/parted -s "{{ usb_device }}" mkpart primary 1MiB 551MiB
 
 - name: enable boot flag on EFI partition
   become: yes
