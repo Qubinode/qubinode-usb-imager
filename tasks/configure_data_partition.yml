@@ -4,8 +4,13 @@
   command: >
     /usr/bin/mount "{{ usb_device }}3" /mnt
 
- 
- 
+- name: create efi and data mount points
+  become: yes
+  file:
+    path: '/mnt/boot/EFI'
+    state: directory
+    mode: '0755'
+  
 - name: deploy qubinode custom kickstart files
   become: yes
   template:
@@ -24,16 +29,8 @@
     src: "{{ rhel_iso_loc }}"
     dest: "/mnt/{{ iso_file }}"
     mode: '0644'
-  #when: iso_exists|bool
+  when: iso_exists|bool
   
-
-# - name: copy RHEL {{ iso_file }} iso file to usb device
-#   become: yes
-#   copy:
-#     src: "{{ rhel_iso_8_loc }}"
-#     dest: "/mnt/{{ iso_file }}"
-#     mode: '0644'
-#   when: rhel_os_major_version == '8'
 
 - name: check if RHEL qcow file exists
   stat: 
@@ -46,10 +43,10 @@
     src: "{{  qcow_image_loc }}"
     dest: "/mnt/{{ qcow_image_file }}"
     mode: '0644'
-  #when: qcow_exists|bool
+  when: qcow_exists|bool
 
 - name: unmount data filesystem
   become: yes
   command: >
-    /usr/bin/umount "{{ usb_device }}3"
+    /usr/bin/umount "{{ usb_device }}2"
   ignore_errors: True

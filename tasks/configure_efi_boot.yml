@@ -10,6 +10,18 @@
     state: directory
     mode: '0755'
 
+######################################
+- name: install legacy grub filesystem
+  become: yes
+  command: >
+    /usr/sbin/grub2-install
+    --no-floppy
+    --recheck
+    --target i386-pc
+    --boot-directory /mnt/boot
+    "{{ usb_device }}"
+#######################################
+
 - name: install efi grub filesystem
   become: yes
   command: >
