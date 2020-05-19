@@ -6,9 +6,9 @@
 - name: format qubinode boot partition 
   include_tasks: format_boot_partition.yml
 
-- name: configure efi and legacy bootable partittion
-  include_tasks: format_efi_partition.yml
+- name: format qubinode data partition
+  include_tasks: format_data_partition.yml
 
-- name: configure legacy bootable partition
+- name: deploy all files to usb partition
   include_tasks: configure_usb.yml
 
