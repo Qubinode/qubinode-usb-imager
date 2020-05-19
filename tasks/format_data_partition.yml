@@ -1,19 +1,11 @@
 ---
 - name: create data boot partition
   become: yes
-  shell: >
-    /usr/sbin/parted -s "{{ usb_device }}" mkpart primary 551MiB 100%"
-  args:
-    executable: /bin/bash
-  ignore_errors: True
+  command: /usr/sbin/parted -s "{{ usb_device }}" mkpart primary 551MiB 100%"
 
 - name: format efi boot grub filesystem
   become: yes
-  shell: >
-    /usr/sbin/mkfs.xfs "{{ usb_device }}"2
-  args:
-    executable: /bin/bash
-  ignore_errors: True 
+  command: /usr/sbin/mkfs.xfs "{{ usb_device }}"2
 
 - name: label the data partition filesystem
   become: yes
