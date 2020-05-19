@@ -10,7 +10,7 @@
 - name: format efi boot grub filesystem
   become: yes
   shell: >
-    /usr/sbin/mkfs.xfs "{{ usb_device }}2"
+    /usr/sbin/mkfs.xfs "{{ usb_device }}"2
   args:
     executable: /bin/bash
   ignore_errors: True 

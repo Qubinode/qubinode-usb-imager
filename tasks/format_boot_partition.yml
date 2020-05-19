@@ -81,7 +81,7 @@
 - name: format efi boot grub filesystem
   become: yes
   shell: >
-    /usr/sbin/parted mkfs.fat -F32 "{{ usb_device }}1"
+    /usr/sbin/parted mkfs.fat -F32 "{{ usb_device }}"1
   args:
     executable: /bin/bash
   ignore_errors: True 
