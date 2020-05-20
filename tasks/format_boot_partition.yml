@@ -64,5 +64,4 @@
 
 - name: format efi boot grub filesystem
   become: yes
-  command: /usr/sbin/mkfs -t vfat "{{ usb_device }}"1 -f
-
+  command: /usr/sbin/mkfs.fat -F32 "{{ usb_device }}"1   #-t vfat "{{ usb_device }}"1 
