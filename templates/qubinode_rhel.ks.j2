@@ -96,7 +96,7 @@ mkdir -p /tmp/mnt
 usbblkid=$(blkid  | grep 'LABEL="qbusbdata"' | awk '{print $1}' | tr -d :)
 mount $usbblkid /tmp/mnt
 ls -lath /tmp/mnt/
-cp -af /tmp/mnt/{{ qcow_image_file }} /home/{{ qubinode_username }}/qubinode-installer/{{ qcow_image_file }}
+cp -af /tmp/mnt/boot/iso/{{ qcow_image_file }} /home/{{ qubinode_username }}/qubinode-installer/{{ qcow_image_file }}
 umount /tmp/mnt
 chown -R {{ qubinode_username }}:{{ qubinode_username }} /home/{{ qubinode_username }}/qubinode-installer
 

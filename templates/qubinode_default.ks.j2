@@ -89,7 +89,7 @@ mv qubinode-installer-{{ git_branch_name }} qubinode-installer
 
 
 %post --nochroot --erroronfail --log=/mnt/sysimage/root/ks-post.log
-cp -af /run/install/isodir/iso/{{ qcow_image_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer/
+cp -af /run/install/isodir/boot/iso/{{ qcow_image_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer/
 %end
 
 %post --log=/mnt/sysimage/root/qubinode_service-post.log

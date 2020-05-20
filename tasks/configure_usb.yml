@@ -39,7 +39,7 @@
 - name: get the FSSUID for the usb device
   become: yes
   shell: >
-    /usr/bin/lsblk -f "{{ usb_device }}2" | awk '/xfs /{print $4}'
+    /usr/bin/lsblk -f "{{ usb_device }}2" | awk '/ext4 /{print $4}'
   register: dev_fsuuid
 
 - debug:
