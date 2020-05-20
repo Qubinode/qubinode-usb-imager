@@ -24,7 +24,7 @@
 #     - "{{ disk_info.partitions }}"
 
 - name: remove all partitions from disk 
-  command: dd if=/dev/zero of="{{ usb_device }}" blocks=1k 
+  command: dd if=/dev/zero of="{{ usb_device }}" bs=512 count=1 conv=notrunc
   ignore_errors: True
 
 - name: tell the OS the paritions has change
