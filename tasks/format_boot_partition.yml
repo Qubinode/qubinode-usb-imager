@@ -15,13 +15,17 @@
   with_items:
     - "{{ disk_info.partitions }}"
   
+# - name: remove all partitions from disk 
+#   parted:
+#     device: "{{ usb_device }}"
+#     number: "{{ item.num }}"
+#     state: absent
+#   with_items:
+#     - "{{ disk_info.partitions }}"
+
 - name: remove all partitions from disk 
-  parted:
-    device: "{{ usb_device }}"
-    number: "{{ item.num }}"
-    state: absent
-  with_items:
-    - "{{ disk_info.partitions }}"
+  command: dd if=/dev/zero of="{{ usb_device }}" blocks=1k 
+  ignore_errors: True
 
 - name: tell the OS the paritions has change
   become: yes
@@ -64,4 +68,4 @@
 
 - name: format efi boot grub filesystem
   become: yes
-  command: /usr/sbin/mkfs.fat -F32 "{{ usb_device }}"1   #-t vfat "{{ usb_device }}"1 
+  command: /usr/sbin/mkfs.fat -F32 "{{ usb_device }}"1 
