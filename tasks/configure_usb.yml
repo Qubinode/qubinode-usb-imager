@@ -26,7 +26,7 @@
     --boot-directory="/media/data/boot"
     "{{ usb_device }}"
 
-- name: install legacy grub filesystem
+- name: install efi grub filesystem
   become: yes
   command: >
     /usr/sbin/grub2-install
