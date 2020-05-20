@@ -3,7 +3,7 @@
   become: yes
   command: /usr/sbin/parted -s "{{ usb_device }}" mkpart primary 551MiB 100%
 
-- name: format efi boot grub filesystem
+- name: format data filesystem
   become: yes
   command: /usr/sbin/mkfs.xfs "{{ usb_device }}"2
 
