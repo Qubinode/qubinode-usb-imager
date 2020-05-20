@@ -61,7 +61,7 @@
 
 - name: create mount points
   file:
-    path: '/media/data/iso'
+    path: '/media/data/boot/iso'
     state: directory 
 
 - name: check if RHEL iso file exists
@@ -73,7 +73,7 @@
   become: yes
   copy:
     src: "{{ rhel_iso_loc }}"
-    dest: "/media/data/iso/{{ iso_file }}"
+    dest: "/media/data/boot/iso/{{ iso_file }}"
     mode: '0644'
   when: iso_exists
   
@@ -86,7 +86,7 @@
   become: yes
   copy:
     src: "{{  qcow_image_loc }}"
-    dest: "/media/data/iso/{{ qcow_image_file }}"
+    dest: "/media/data/boot/iso/{{ qcow_image_file }}"
     mode: '0644'
   when: qcow_exists
 
