@@ -21,8 +21,9 @@
   become: yes
   command: >
     /usr/sbin/grub2-install
-    --target i386-pc
-    --boot-directory "/media/data/boot"
+    --target=i386-pc
+    --recheck
+    --boot-directory="/media/data/boot"
     "{{ usb_device }}"
 
 - name: install legacy grub filesystem
