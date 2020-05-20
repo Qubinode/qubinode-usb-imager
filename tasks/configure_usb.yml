@@ -48,7 +48,7 @@
 - name: deploy qubinode custom grub.conf file
   become: yes
   template:
-    src: grub2.legacy.conf.j2
+    src: grub2.efi.conf.j2
     dest: '/media/data/boot/grub2/grub.cfg'
     mode: '0644'
 
