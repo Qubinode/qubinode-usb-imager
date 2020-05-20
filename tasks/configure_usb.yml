@@ -89,12 +89,19 @@
     mode: '0644'
   when: qcow_exists
 
-- name: unmount data filesystem
-  become: yes
-  command: >
-    /usr/bin/umount "{{ usb_device }}2"
+# - name: unmount data filesystem
+#   become: yes
+#   command: >
+#     /usr/bin/umount "{{ usb_device }}1"
 
-- name: unmount boot filesystem
-  become: yes
-  command: >
-    /usr/bin/umount "{{ usb_device }}1"
+# - name: unmount boot filesystem
+#   become: yes
+#   command: >
+#     /usr/bin/umount "{{ usb_device }}2"
+- name: Unmount a mounted volume
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop:
+  - "{{ usb_device }}2"
+  - "{{ usb_device }}1"
