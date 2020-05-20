@@ -5,7 +5,7 @@
 
 - name: format data filesystem
   become: yes
-  command: /usr/sbin/mkfs.xfs "{{ usb_device }}"2
+  command: /usr/sbin/mkfs.xfs "{{ usb_device }}"2 -f
 
 - name: label the data partition filesystem
   become: yes
