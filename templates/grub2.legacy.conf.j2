@@ -141,6 +141,7 @@ menuentry '[QUBINODE] {{ iso_file  }} {{ ks_file }} Kickstart' --class rhel fedo
        set gfxpayload=keep
        insmod gzio
        insmod part_msdos
+       insmod ext2
        linux (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=$FSUUID:$ISO inst.repo=hd:UUID=$FSUUID:$ISO inst.ks=hd:UUID=$FSUUID:$KS rhgb quiet
        initrd (loop)/isolinux/initrd.img
 }
@@ -154,6 +155,7 @@ menuentry '[ISO] {{ iso_file  }}' --class rhel fedora --class gnu-linux --class 
        set gfxpayload=keep
        insmod gzio
        insmod part_msdos
+       insmod ext2
        linux (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=$FSUUID:$ISO inst.repo=hd:UUID=$FSUUID:$ISO rhgb quiet
        initrd (loop)/isolinux/initrd.img
 }

@@ -142,6 +142,7 @@ menuentry '[QUBINODE] RHEL {{ iso_file }}  {{ ks_file }} Kickstart' --class rhel
        insmod gzio
        insmod part_msdos
        insmod fat
+       insmod ext2
        linuxefi (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=$FSUUID:$ISO inst.repo=hd:UUID=$FSUUID:$ISO inst.ks=hd:UUID=$FSUUID:$KS rhgb quiet
        initrdefi (loop)/isolinux/initrd.img
 }
@@ -156,6 +157,7 @@ menuentry '[ISO] {{ iso_file }} --class rhel fedora --class gnu-linux' --class g
        insmod gzio
        insmod part_msdos
        insmod fat
+       insmod ext2
        linuxefi (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=$FSUUID:$ISO inst.repo=hd:UUID=$FSUUID:$ISO rhgb quiet
        initrdefi (loop)/isolinux/initrd.img
 }
