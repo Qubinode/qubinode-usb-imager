@@ -129,10 +129,10 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""
 
 cd /home/{{ qubinode_username }}
-wget "{{ qubinode_github }}/{{ qubinode_branchname }}.zip"
+wget "{{ qubinode_github }}/{{ git_branch_name }}.zip"
 unzip {{ qubinode_branchname }}.zip
-mv qubinode-installer-{{ qubinode_branchname }} qubinode-installer
-rm -f {{ qubinode_branchname }}.zip
+mv qubinode-installer-{{ git_branch_name }} qubinode-installer
+rm -f {{ git_branch_name }}.zip
 cd qubinode-installer/
 
 mkdir -p /tmp/mnt
