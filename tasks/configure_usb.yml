@@ -17,14 +17,14 @@
   command: >
     /usr/bin/mount "{{ usb_device }}2" /media/data
 
-- name: install legacy grub filesystem
-  become: yes
-  command: >
-    /usr/sbin/grub2-install
-    --target=i386-pc
-    --recheck
-    --boot-directory="/media/data/boot"
-    "{{ usb_device }}"
+# - name: install legacy grub filesystem
+#   become: yes
+#   command: >
+#     /usr/sbin/grub2-install
+#     --target=i386-pc
+#     --recheck
+#     --boot-directory="/media/data/boot"
+#     "{{ usb_device }}"
 
 - name: install efi grub filesystem
   become: yes
