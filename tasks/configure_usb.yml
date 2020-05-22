@@ -1,0 +1,90 @@
+---
+- name: create mount points
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - '/media/efi'
+    - '/media/data'
+
+- name: mount efi partition
+  become: yes
+  command: >
+    /usr/bin/mount "{{ usb_device }}1" /media/efi
+
+- name: mount data partition
+  become: yes
+  command: >
+    /usr/bin/mount "{{ usb_device }}2" /media/data
+
+- name: install efi grub filesystem
+  become: yes
+  command: >
+    /usr/sbin/grub2-install
+    --target=x86_64-efi 
+    --recheck 
+    --removable 
+    --efi-directory="/media/efi" 
+    --boot-directory="/media/data/boot"
+
+- name: get the FSSUID for the usb device
+  become: yes
+  shell: >
+    /usr/bin/lsblk -f "{{ usb_device }}2" | awk '/ext4 /{print $4}'
+  register: dev_fsuuid
+
+- debug:
+    var: "{{ dev_fsuuid }}"
+
+- name: deploy qubinode custom grub.conf file
+  become: yes
+  template:
+    src: grub2.efi.conf.j2
+    dest: '/media/data/boot/grub2/grub.cfg'
+    mode: '0644'
+
+- name: deploy qubinode custom kickstart files
+  become: yes
+  template:
+    src:  "{{ ks_file }}.j2"
+    dest: "/media/data/boot/{{ ks_file }}"
+    mode: '0644'
+
+- name: create mount points
+  file:
+    path: '/media/data/boot/iso'
+    state: directory 
+
+- name: check if RHEL iso file exists
+  stat: 
+    path: "{{ rhel_iso_loc }}"
+  register: iso_exists
+
+- name: copy RHEL iso file to usb device
+  become: yes
+  copy:
+    src: "{{ rhel_iso_loc }}"
+    dest: "/media/data/boot/iso/{{ iso_file }}"
+    mode: '0644'
+  when: iso_exists
+  
+- name: check if RHEL qcow file exists
+  stat: 
+    path: "{{ qcow_image_loc }}"
+  register: qcow_exists
+
+- name: copy RHEL qcow file to usb device
+  become: yes
+  copy:
+    src: "{{  qcow_image_loc }}"
+    dest: "/media/data/boot/iso/{{ qcow_image_file }}"
+    mode: '0644'
+  when: qcow_exists
+
+- name: Unmount a mounted volume
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop:
+  - "{{ usb_device }}2"
+  - "{{ usb_device }}1"

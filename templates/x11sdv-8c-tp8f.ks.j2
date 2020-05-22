@@ -1,12 +1,19 @@
 #version=DEVEL
 #System authorization information
 auth --enableshadow --passalgo=sha512
+{% if rhel_os_major_version == '7' %}
 repo --name="Server-HighAvailability" --baseurl=file:///run/install/repo/addons/HighAvailability
 repo --name="Server-ResilientStorage" --baseurl=file:///run/install/repo/addons/ResilientStorage
-# Use CDROM installation media
-cdrom
 # Use text mode install
 text
+{% elif rhel_os_major_version == '8' %}
+repo --name="AppStream" --baseurl=file:///run/install/repo/AppStream
+# Use grapical mode install
+graphical
+{%endif%}
+# Use CDROM installation media
+cdrom
+
 # Run the Setup Agent on first boot
 firstboot --enable
 ignoredisk --only-use={{ os_disk }}
@@ -122,17 +129,17 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""
 
 cd /home/{{ qubinode_username }}
-wget "{{ qubinode_github }}/{{ qubinode_branchname }}.zip"
-unzip {{ qubinode_branchname }}.zip
-mv qubinode-installer-{{ qubinode_branchname }} qubinode-installer
-rm -f {{ qubinode_branchname }}.zip
+wget "{{ qubinode_github }}/{{ git_branch_name }}.zip"
+unzip {{  git_branch_name }}.zip
+mv qubinode-installer-{{ git_branch_name }} qubinode-installer
+rm -f {{ git_branch_name }}.zip
 cd qubinode-installer/
 
 mkdir -p /tmp/mnt
 usbblkid=$(blkid  | grep 'LABEL="qbusbdata"' | awk '{print $1}' | tr -d :)
 mount $usbblkid /tmp/mnt
 ls -lath /tmp/mnt/
-cp -af /tmp/mnt/{{ rhel_qcow_file }} /home/{{ qubinode_username }}/qubinode-installer/{{ rhel_qcow_file }}
+cp -af /tmp/mnt/{{ qcow_image_file }} /home/{{ qubinode_username }}/qubinode-installer/{{ qcow_image_file }}
 umount /tmp/mnt
 chown -R {{ qubinode_username }}:{{ qubinode_username }} /home/{{ qubinode_username }}/qubinode-installer
 

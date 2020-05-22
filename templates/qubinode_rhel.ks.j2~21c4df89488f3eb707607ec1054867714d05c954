@@ -1,23 +1,15 @@
 #version=DEVEL
 #System authorization information
 auth --enableshadow --passalgo=sha512
-{% if rhel_os_major_version == '7' %}
 repo --name="Server-HighAvailability" --baseurl=file:///run/install/repo/addons/HighAvailability
 repo --name="Server-ResilientStorage" --baseurl=file:///run/install/repo/addons/ResilientStorage
-# Use text mode install
-text
-{% elif rhel_os_major_version == '8' %}
-repo --name="AppStream" --baseurl=file:///run/install/repo/AppStream
-# Use grapical mode install
-graphical
-{%endif%}
-
 # Use CDROM installation media
 cdrom
-
+# Use text mode install
+text
 # Run the Setup Agent on first boot
 firstboot --enable
-ignoredisk --only-use={{ os_disk }}
+ignoredisk --only-use=sda
 # Keyboard layouts
 keyboard --vckeymap=us --xlayouts='us'
 # System language
@@ -35,14 +27,14 @@ rootpw --iscrypted {{ root_pw }}
 services --enabled="chronyd"
 # System timezone
 timezone America/New_York --isUtc
-user --name={{ qubinode_username }} --password={{ qubinode_user_pw }} --iscrypted --gecos="{{ qubinode_user_fullname }}"
+user --name=qubi --password={{ qubi_pw }} --iscrypted --gecos="qubi admin"
 # Clear the Master Boot Record
 zerombr
 # System bootloader configuration
-bootloader --append=" crashkernel=auto" --location=mbr --boot-drive={{ os_disk }}
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=sda
 autopart --type=lvm --nohome
 # Partition clearing information
-clearpart --all --initlabel --drives={{ os_disk }}
+clearpart --all --initlabel --drives=sda
 
 %packages
 @^virtualization-host-environment
