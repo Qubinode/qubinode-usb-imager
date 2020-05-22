@@ -55,31 +55,33 @@ Role Variables
 Example Playbook for Generic Server
 ----------------
 ```
+---
 - hosts: localhost
   remote_user: root
   roles:
     - name: qubinode-usb-imager
       vars:
-        rhel_iso_dir: '/home/qubi/rhel-server-7.7-x86_64-dvd.iso'
-        rhel_qcow_dir: '/home/qubi/rhel-server-7.7-update-2-x86_64-kvm.qcow2'
-        rhel_qcow_file: '/rhel-server-7.7-update-2-x86_64-kvm.qcow2'
-        qubinode_github: 'https://github.com/Qubinode/qubinode-installer/archive/'
-        qubinode_branchname: '2.2'
-        rhel_version: 7.7
-        os_disk: sda
+        rhel_image_dir: '/home/qubi/Downloads'
         usb_device: '/dev/sdb'
         root_pw: "$6$lzcUgJ886.GHT1IM$BtYRQltzadzbHtubxHC1li5yFbdvdkTeGnD2ex1H4VHwQoUGTz22UHyUondkHu/wG515sFuztuesrwC7s.Xkd/"
-        qubinode_user_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
         set_static_ip: true
+        qubinode_user_pw: "$6$hDS1K0FLywm2VIHm$c3PP8Ko9eHxYS.Lk/gRtwYzQCBlm0otDpx7UlJDuTYeK0EtUG40kS/gXKgMAaZ71NavoEsCHTnamQVCuofQh1/"
         qubinode_username: 'qubi'
+        qubinode_username_fullname: 'Qubi Admin'
         qubinode_net_dev: 'eno1'
-        qubinode_ip_addr: '192.168.1.45'
+        qubinode_ip_addr: '192.168.86.249'
         qubinode_nameserver_ip: '1.1.1.1'
         qubinode_netmask: '255.255.255.0'
         qubinode_hostname: 'qubinode-box.example.com'
-        qubinode_gw: '192.168.1.1'
-        iso_grub_dir: '/rhel-server-7.7-x86_64-dvd.iso'
-        ks_file: 'qubinode_rhel77.ks'
+        qubinode_gw: '192.168.86.1'
+        qubinode_user: 'qubi'
+        iso_file: 'rhel-8.2-x86_64-dvd.iso'
+        qcow_image_file: 'rhel-8.2-x86_64-kvm.qcow2'
+        rhel_os_major_version: '8'
+        rhel_os_minor_version: '2'
+        qubinode_github: 'https://github.com/Qubinode/qubinode-installer/archive/'
+        git_branch_name: 'dev'
+        ks_file: 'qubinode_rhel.ks'
         ok_to_reboot: no
 ```
 

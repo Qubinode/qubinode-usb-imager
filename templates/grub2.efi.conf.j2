@@ -132,8 +132,8 @@ fi
 
 ### BEGIN /etc/grub.d/10_linux ###
 menuentry '[QUBINODE] RHEL {{ iso_file }}  {{ ks_file }} Kickstart' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
-       set ISO=/{{ iso_file }}
-       set KS=/{{ ks_file }}
+       set ISO=/boot/iso/{{ iso_file }}
+       set KS=/boot/{{ ks_file }}
        set FSUUID={{ dev_fsuuid.stdout }}
        search --fs-uuid --set=root $FSUUID
        loopback loop $ISO
@@ -142,13 +142,13 @@ menuentry '[QUBINODE] RHEL {{ iso_file }}  {{ ks_file }} Kickstart' --class rhel
        insmod gzio
        insmod part_msdos
        insmod fat
-       insmod xfs
+       insmod ext2
        linuxefi (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=$FSUUID:$ISO inst.repo=hd:UUID=$FSUUID:$ISO inst.ks=hd:UUID=$FSUUID:$KS rhgb quiet
        initrdefi (loop)/isolinux/initrd.img
 }
 
 menuentry '[ISO] {{ iso_file }} --class rhel fedora --class gnu-linux' --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
-       set ISO=/{{ iso_file  }}
+       set ISO=/boot/iso/{{ iso_file }}
        set FSUUID={{ dev_fsuuid.stdout }}
        search --fs-uuid --set=root $FSUUID
        loopback loop $ISO
@@ -156,8 +156,8 @@ menuentry '[ISO] {{ iso_file }} --class rhel fedora --class gnu-linux' --class g
        set gfxpayload=keep
        insmod gzio
        insmod part_msdos
-       insmod xfs
        insmod fat
+       insmod ext2
        linuxefi (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=$FSUUID:$ISO inst.repo=hd:UUID=$FSUUID:$ISO rhgb quiet
        initrdefi (loop)/isolinux/initrd.img
 }

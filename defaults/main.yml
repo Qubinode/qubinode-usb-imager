@@ -29,7 +29,7 @@ qcow_image_file: ''
 qcow_image_loc: '{{ rhel_image_dir }}/{{ qcow_image_file }}'
 rhel_iso_loc: '{{ rhel_image_dir }}/{{ iso_file }}'
 qubinode_github: 'https://github.com/Qubinode/qubinode-installer/archive/'
-qubinode_branchname: 'dev'
+git_branch_name: 'dev'
 ks_file: 'qubinode_rhel.ks'
 enable_gnome_desktop: false
 os_disk: 'sda'
