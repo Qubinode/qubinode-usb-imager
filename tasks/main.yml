@@ -3,14 +3,12 @@
 - name: install required packages
   include_tasks: install_pkgs.yml
 
-- name: format qubinode usb disk
-  include_tasks: format_disks.yml
+- name: format qubinode boot partition 
+  include_tasks: format_boot_partition.yml
 
-- name: configure efi bootable partittion
-  include_tasks: configure_efi_boot.yml
+- name: format qubinode data partition
+  include_tasks: format_data_partition.yml
 
-- name: configure legacy bootable partition
-  include_tasks: configure_legacy_boot.yml
+- name: deploy all files to usb partition
+  include_tasks: configure_usb.yml
 
-- name: configure data partition
-  include_tasks: configure_data_partition.yml

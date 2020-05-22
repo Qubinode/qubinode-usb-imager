@@ -1,0 +1,149 @@
+#version=DEVEL
+#System authorization information
+auth --enableshadow --passalgo=sha512
+{% if rhel_os_major_version == '7' %}
+repo --name="Server-HighAvailability" --baseurl=file:///run/install/repo/addons/HighAvailability
+repo --name="Server-ResilientStorage" --baseurl=file:///run/install/repo/addons/ResilientStorage
+# Use text mode install
+text
+{% elif rhel_os_major_version == '8' %}
+repo --name="AppStream" --baseurl=file:///run/install/repo/AppStream
+# Use grapical mode install
+graphical
+{%endif%}
+# Use CDROM installation media
+cdrom
+
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use={{ os_disk }}
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+# Reboot after installation
+reboot
+
+# Root password
+rootpw --iscrypted {{ root_pw }}
+
+# Run the Setup Agent on first boot
+ignoredisk --only-use={{ os_disk }}
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+# Lan Network eno1 (bottom left facing the back of the lunchbox)
+{%if set_static_ip %}
+network  --bootproto=static --device={{ qubinode_net_dev }} --gateway={{ qubinode_gw }} --ip={{ qubinode_ip_addr }} --nameserver={{ qubinode_nameserver_ip }} --netmask={{ qubinode_netmask }} --onboot=on --ipv6=off --activate
+{% endif %}
+
+{%if set_static_ip == false %}
+network  --bootproto=dhcp --device=eno1 --onboot=on --ipv6=off --activate
+{% endif %}
+
+# Wan Network
+network  --bootproto=dhcp --device=eno2 --onboot=off --ipv6=auto --no-activate
+network  --bootproto=dhcp --device=eno3 --onboot=off --ipv6=auto --no-activate
+network  --bootproto=dhcp --device=eno4 --onboot=off --ipv6=auto --no-activate
+network  --bootproto=dhcp --device=eno5 --onboot=off --ipv6=auto --no-activate
+network  --bootproto=dhcp --device=eno6 --onboot=off --ipv6=auto --no-activate
+network  --bootproto=dhcp --device=eno7 --onboot=off --ipv6=auto --no-activate
+network  --bootproto=dhcp --device=eno8 --onboot=off --ipv6=auto --no-activate
+network --hostname={{ qubinode_hostname }}
+
+# Enable SELinux
+selinux --enforcing
+
+# System services
+services --enabled="chronyd"
+# System timezone
+timezone America/New_York --isUtc
+
+# Set Default username
+user --name={{ qubinode_username }} --password={{ qubinode_user_pw }} --iscrypted --gecos="{{ qubinode_user_fullname }}"
+
+# Clear the Master Boot Record
+zerombr
+
+### DISK INFO ###
+ignoredisk --only-use={{ os_disk }}
+# System bootloader configuration
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive={{ os_disk }}
+
+# Partition clearing information
+clearpart --all --initlabel --drives={{ os_disk }}
+
+
+# Disk partitioning information
+part pv.155 --fstype="lvmpv" --ondisk={{ os_disk }} --size=10240 --grow
+volgroup rhel --pesize=4096 pv.155
+part /boot --fstype="xfs" --size=1024 --ondisk={{ os_disk }}
+part /boot/efi --fstype="efi" --ondisk={{ os_disk }} --size=1024 --fsoptions="umask=0077,shortname=winnt"
+logvol /  --fstype="xfs" --size=8192 --name=root --vgname=rhel --grow
+logvol swap  --fstype="swap" --size=16064 --name=swap --vgname=rhel
+
+%packages --ignoremissing
+@^virtualization-host-environment
+@base
+@core
+@virtualization-hypervisor
+@virtualization-client
+@virtualization-platform
+@virtualization-tools
+libguestfs-tools
+wget
+mlocate
+chrony
+kexec-tools
+git
+curl
+{%if enable_gnome_desktop %}
+# DEVELOPERMODE
+@^graphical-server-environment
+@gnome-desktop
+@x-window-system
+@development-and-creative-workstation
+@graphical-administration-tools
+@fonts
+@server-with-gui
+{% endif %}
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb='auto'
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+
+%post --nochroot --log=/mnt/sysimage/root/ks-post-nochroot.log
+%end
+
+%post --log=/root/admin-ks.log
+ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""
+
+cd /home/{{ qubinode_username }}
+wget "{{ qubinode_github }}/{{ git_branch_name }}.zip"
+unzip {{  git_branch_name }}.zip
+mv qubinode-installer-{{ git_branch_name }} qubinode-installer
+rm -f {{ git_branch_name }}.zip
+cd qubinode-installer/
+
+mkdir -p /tmp/mnt
+usbblkid=$(blkid  | grep 'LABEL="qbusbdata"' | awk '{print $1}' | tr -d :)
+mount $usbblkid /tmp/mnt
+ls -lath /tmp/mnt/
+cp -af /tmp/mnt/{{ qcow_image_file }} /home/{{ qubinode_username }}/qubinode-installer/{{ qcow_image_file }}
+umount /tmp/mnt
+chown -R {{ qubinode_username }}:{{ qubinode_username }} /home/{{ qubinode_username }}/qubinode-installer
+
+{%if enable_gnome_desktop %}
+systemctl set-default graphical.target
+{% endif %}
+%end

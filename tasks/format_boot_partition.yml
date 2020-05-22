@@ -1,0 +1,71 @@
+---
+# format_disks file for qubinode-usb-imager
+- name: read usb device information 
+  become: yes
+  parted: 
+    device: "{{ usb_device }}"
+    unit: MiB
+  register: disk_info
+
+- name: unmount usb qubinode device
+  become: yes
+  mount:
+    path: "{ usb_device }}{{ item.num }}"
+    state: absent
+  with_items:
+    - "{{ disk_info.partitions }}"
+  
+# - name: remove all partitions from disk 
+#   parted:
+#     device: "{{ usb_device }}"
+#     number: "{{ item.num }}"
+#     state: absent
+#   with_items:
+#     - "{{ disk_info.partitions }}"
+
+- name: remove all partitions from disk 
+  command: dd if=/dev/zero of="{{ usb_device }}" bs=512 count=1 conv=notrunc
+  ignore_errors: True
+
+- name: tell the OS the paritions has change
+  become: yes
+  command: >
+    sudo partprobe
+  register: partprobe_result
+  ignore_errors: True
+
+- name: reboot if partprobe fails
+  become: yes
+  shell: "/usr/bin/sleep 5 && /usr/sbin/reboot"
+  async: 1
+  poll: 0
+  when: partprobe_result.rc == 1 and ok_to_reboot|bool
+
+- name: wait for the reboot to complete
+  become: yes
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: partprobe_result.rc == 1 and ok_to_reboot|bool
+
+- name: create msdos boot label
+  become: yes
+  command: /usr/sbin/parted -s "{{ usb_device }}" mklabel msdos
+
+- name: create msdos boot label
+  become: yes
+  command: /usr/sbin/parted -s "{{ usb_device }}" mklabel msdos
+
+- name: create EFI boot partition
+  become: yes
+  command: /usr/sbin/parted -s "{{ usb_device }}" mkpart primary 1MiB 551MiB
+
+- name: enable boot flag on EFI partition
+  become: yes
+  command: /usr/sbin/parted -s "{{ usb_device }}" set 1 boot on
+
+- name: format efi boot grub filesystem
+  become: yes
+  command: /usr/sbin/mkfs.fat -F32 "{{ usb_device }}"1 
