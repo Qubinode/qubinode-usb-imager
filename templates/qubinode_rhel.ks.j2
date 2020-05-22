@@ -109,14 +109,16 @@ systemctl set-default graphical.target
 cp -af /run/install/isodir/boot/iso/{{ qcow_image_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer/
 %end
 
+%post --nochroot --erroronfail --log=/mnt/sysimage/root/ks-post.log
+cp -af /run/install/isodir/boot/iso/{{ qcow_image_file }} /mnt/sysimage/home/{{ qubinode_username }}/qubinode-installer/
+%end
+
 %post --log=/mnt/sysimage/root/qubinode_service-post.log
 chown -Rf {{ qubinode_username }}:{{ qubinode_username }} /home/{{ qubinode_username }}/qubinode-installer
 chmod u+x /home/{{ qubinode_username }}/qubinode-installer/qubinode-installer
 cat > /etc/systemd/system/qubinode-installer.service << EOF
 [Unit]
 Description=Run qubinode installer at first boot
-DefaultDependencies=no
-Conflicts=shutdown.target
 After=systemd-readahead-collect.service systemd-readahead-replay.service systemd-remount-fs.service
 Before=getty@tty6.service gdm.service
 After=getty@tty6.service gdm.service
@@ -130,6 +132,7 @@ ExecStartPre=/usr/bin/sleep 5
 ExecStartPre=/usr/bin/chvt 6
 ExecStartPre=/usr/bin/clear
 ExecStart=/home/{{ qubinode_username }}/qubinode-installer/qubinode-installer
+ExecStopPost=/usr/bin/chvt 1
 TimeoutSec=0
 StandardOutput=tty
 StandardInput=tty
