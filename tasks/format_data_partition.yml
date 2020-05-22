@@ -7,10 +7,6 @@
   become: yes
   command: /usr/sbin/mkfs.ext4 "{{ usb_device }}"2 
 
-# - name: label the data partition filesystem
-#   become: yes
-#   command: xfs_admin -L qbusbdata "{{ usb_device }}2"
-
 - name: label the data partition filesystem
   become: yes
   command: e2label  "{{ usb_device }}2" qbusbdata 

@@ -1,0 +1,34 @@
+--- 
+- name: mount data filesystem
+  become: yes
+  command: >
+    /usr/bin/mount "{{ usb_device }}3" /mnt
+
+- name: deploy qubinode custom kickstart file
+  become: yes 
+  template:
+    src: qubinode_rhel.ks.j2
+    dest: '/mnt/qubinode-rhel.ks'
+    mode: '0644'
+
+- name: copy {{rhel_os_major_version}}.{{rhel_os_minor_version}} iso file to usb device
+  become: yes
+  copy:
+    src: "{{ rhel_iso_dir }}"
+    dest: "/mnt{{ iso_7_grub_dir }}"
+    mode: '0644'
+  when: rhel_os_major_version == '7'
+
+- name: copy {{rhel_os_major_version}}.{{rhel_os_minor_version}} iso file to usb device
+  become: yes
+  copy:
+    src: "{{ rhel_iso_dir }}"
+    dest: "/mnt{{ iso_8_grub_dir }}"
+    mode: '0644'
+  when: rhel_os_major_version == '8'
+
+- name: unmount data filesystem
+  become: yes
+  command: >
+    /usr/bin/umount "{{ usb_device }}3" 
+  ignore_errors: True
