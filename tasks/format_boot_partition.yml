@@ -15,13 +15,6 @@
   with_items:
     - "{{ disk_info.partitions }}"
   
-# - name: remove all partitions from disk 
-#   parted:
-#     device: "{{ usb_device }}"
-#     number: "{{ item.num }}"
-#     state: absent
-#   with_items:
-#     - "{{ disk_info.partitions }}"
 
 - name: remove all partitions from disk 
   command: dd if=/dev/zero of="{{ usb_device }}" bs=512 count=1 conv=notrunc

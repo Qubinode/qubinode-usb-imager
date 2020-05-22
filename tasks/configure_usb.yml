@@ -17,15 +17,6 @@
   command: >
     /usr/bin/mount "{{ usb_device }}2" /media/data
 
-# - name: install legacy grub filesystem
-#   become: yes
-#   command: >
-#     /usr/sbin/grub2-install
-#     --target=i386-pc
-#     --recheck
-#     --boot-directory="/media/data/boot"
-#     "{{ usb_device }}"
-
 - name: install efi grub filesystem
   become: yes
   command: >
@@ -90,15 +81,6 @@
     mode: '0644'
   when: qcow_exists
 
-# - name: unmount data filesystem
-#   become: yes
-#   command: >
-#     /usr/bin/umount "{{ usb_device }}1"
-
-# - name: unmount boot filesystem
-#   become: yes
-#   command: >
-#     /usr/bin/umount "{{ usb_device }}2"
 - name: Unmount a mounted volume
   mount:
     path: "{{ item }}"
