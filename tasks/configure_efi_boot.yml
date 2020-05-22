@@ -25,6 +25,10 @@
     /usr/bin/lsblk -f "{{ usb_device }}3" | awk '/ext4 /{print $5}'
   register: dev_fsuuid
 
+# - name: get fssuid 
+#   debug: 
+#     var: "{{ dev_fsuuid }}"
+
 - name: deploy efi qubinode custom grub file
   become: yes 
   template:

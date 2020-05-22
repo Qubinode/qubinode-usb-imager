@@ -131,10 +131,9 @@ fi
 ### END /etc/grub.d/01_users ###
 
 ### BEGIN /etc/grub.d/10_linux ###
-{% if rhel_os_major_version == '7' %}
-menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{ rhel_os_minor_version}} Kickstart' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
-       set ISO={{ iso_7_grub_dir }}
-       set KS={{ ks_file }}
+menuentry '[QUBINODE] {{ iso_file  }} {{ ks_file }} Kickstart' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
+       set ISO=/boot/iso/{{ iso_file }}
+       set KS=/boot/{{ ks_file }}
        set FSUUID={{ dev_fsuuid.stdout }}
        search --fs-uuid --set=root $FSUUID
        loopback loop $ISO
@@ -147,8 +146,8 @@ menuentry '[QUBINODE] RHEL rhel-server-{{rhel_os_major_version}}.{{ rhel_os_mino
        initrd (loop)/isolinux/initrd.img
 }
 
-menuentry '[ISO] rhel-server-{{rhel_os_major_version}}.{{rhel_os_minor_version}}-x86_64-dvd' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
-       set ISO={{ iso_7_grub_dir }}
+menuentry '[ISO] {{ iso_file  }}' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-957.el7.x86_64-advanced-a6984e62-9f65-4c00-884f-18a3884867cb' {
+       set ISO=/boot/iso/{{ iso_file }}
        set FSUUID={{ dev_fsuuid.stdout }}
        search --fs-uuid --set=root $FSUUID
        loopback loop $ISO
